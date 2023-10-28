@@ -10,13 +10,7 @@ function BurgersList() {
  
 
   const url = 'https://forkify-api.herokuapp.com/api/v2/recipes?search=burger&key=fa662663-12c3-4173-b9ef-0604c3ce8767';
-// const options = {
-// 	method: 'GET',
-// 	headers: {
-// 		'X-RapidAPI-Key': '781daca55bmshd9afdd4411c7c83p1574efjsnfa370888075d',
-// 		'X-RapidAPI-Host': 'pizza-and-desserts.p.rapidapi.com'
-// 	}
-// };
+
 
   const { data, isLoading, isError, error}  = useQuery({
     queryKey: ['burgersList'],

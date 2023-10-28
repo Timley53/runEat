@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
 
-        <Dashbaord children={children} />
+        <Dashbaord children={<>{children}</>} />
 
        
 
