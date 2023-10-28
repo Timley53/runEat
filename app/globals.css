@@ -5,3 +5,14 @@
 .bottom{
   bottom: 0;
 }
+
+.banner-bg{
+ /* background: url("./resource/pexels-armin-rimoldi-5553620.jpg");  */
+  /* object-fit: fill; */
+  /* width: 100%;  */
+  /* height: 200px; */
+}
+.floating{
+  border-radius: 59% 41% 70% 30% / 51% 53% 47% 49%;
+
+}
