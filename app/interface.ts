@@ -12,7 +12,16 @@ export interface Cartprops{
 
 export interface InitialStateType {
     cart: CartType[] | [];
-    productQuantity: number
+    productQuantity: number,
+    favorite: favoriteType[] | []
+}
+
+export interface favoriteType {
+    title: string,
+    img: string,
+    price: number,
+    id: string,
+
 }
 
 export interface CartType {
@@ -21,6 +30,14 @@ export interface CartType {
     img:string,
     price: number,
     title: string;
+}
+export interface newCartType {
+    id: string,
+    quantity: number,
+    img:string,
+    price: number,
+    title:string
+
 }
 export interface uiInitialState {
     pizza: boolean;
@@ -52,5 +69,6 @@ export interface pricedDataType {
     pubisher: string,
     title: string,
     price: number,
-    quantity: number
+    quantity: number,
+    favorite: boolean
 }

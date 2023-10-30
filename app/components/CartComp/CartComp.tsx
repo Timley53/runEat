@@ -12,11 +12,11 @@ function CartComp({id, quantity, img,price, title }: CartType) {
     const dispatch = useDispatch()
     console.log(quantity)
   return (
-    <article className='flex w-[95%]  p-1 my-2 border-2 border-orange-200 rounded-md m-1'>
+    <article className='flex w-[95%] max-h-28  p-1 my-2 border-2 border-orange-200 rounded-md m-1 '>
 
         <img src={img} alt="" className='w-[35%] h-[90%] object-cover m-1' />
         <div className="flex w-[40%] flex-col text-sm">
-        <span className='text-[12px]'>{title}</span> 
+        <span className='text-[12px]' title={title}>{title.slice(0, 30)}...</span> 
 
         <div className="flex  ">
 
@@ -38,11 +38,14 @@ function CartComp({id, quantity, img,price, title }: CartType) {
 
 
         </div>
+        <div className="w-[20%] flex justify-end ">
+
 <span onClick={()=>{
     dispatch(deleteCart(id))
-}} className=' m-1 self-start  h-full cursor pointer '>
+}} className=' m-1 cursor-pointer text-xl hover:text-rose-200'>
     <MdOutlineCancel/>
 </span>
+        </div>
         
     </article>
   )

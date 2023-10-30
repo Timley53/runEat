@@ -1,12 +1,15 @@
 import React , {useState}from 'react'
 import ProductComp from './ProductCOmp'
 import { useQuery } from '@tanstack/react-query'
-import { pizzaRecipeType, pizzaType, pricedDataType } from '@/app/interface';
+import { favoriteType, pizzaRecipeType, pizzaType, pricedDataType } from '@/app/interface';
 import Pagination from '../Pagination';
+import { useSelector } from 'react-redux';
+import { Rootstate } from '@/app/GlobalRedux/store';
 
 
 function PizzaList() {
   const [currentPage, setCurrentPage] = useState<number>(1)
+  const favorites = useSelector((state:Rootstate) => state.user.favorite) 
  
 
   const url = 'https://forkify-api.herokuapp.com/api/v2/recipes?search=pizza&key=fa662663-12c3-4173-b9ef-0604c3ce8767';
@@ -49,7 +52,10 @@ function PizzaList() {
     <div className='w-full h-full flex flex-col'>
     <div className='w-full border-2 flex flex-wrap sm:justify-start md:justify-start md:items-start  h-[full] my-2 '>
       {data?.slice?.(start, end).map((pizz: pricedDataType) => {
-        return <ProductComp key={pizz.id} {...pizz} />
+
+        const favorite =  favorites.some((fav:favoriteType) => fav?.id === pizz.id)
+
+        return <ProductComp key={pizz.id} {...pizz} favorite={favorite} />
       })}
     </div>
 <Pagination currentPage={currentPage} pages={pages} setCurrentPage={setCurrentPage} />
