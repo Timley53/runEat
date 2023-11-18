@@ -56,7 +56,7 @@ async function Page({params }:ProductPageProps  ) {
  const description = ingredients.map((ing:ingredientsType ) => ing.description).join(', ')
 
   return (
-    <div className='flex  border-2 md:flex-row sm:flex-col md:p-2 sm:p-0 bg-slate-50 md:h-screen sm:h-full' >
+    <div className='flex md:w-[80%] mx-auto   md:flex-row sm:flex-col md:p-2 sm:p-0  md:h-screen sm:h-full' >
 
       <div className="img-title flex flex-col md:w-[50%] sm:w-[100%]">
         <Link href={"../"} className='self-start md:text-xl sm:my-2 sm:text-3xl md:my-1 '>
@@ -100,9 +100,8 @@ async function Page({params }:ProductPageProps  ) {
 
       <div className="add-buy flex w-full md:items-start md:my-4 sm:mb-20 sm:items-center sm:w-[100%] sm:justify-between md:justify-start
        sm:my-3">
-        <button className='bg-orange-300 px-6 p-2 mx-3 rounded-full text-base text-center'>Add to Cart</button>
-
-        <button className='bg-emerald-500 px-6 p-2 mx-3 rounded-full text-base'>Buy Now</button>
+        <button className='bg-orange-300 px-6 p-2 mx-3 rounded-full text-base text-center text-sm'>Add to Cart</button>
+        <button className='bg-emerald-500 px-6 p-2 mx-3 rounded-full text-base text-sm'>Buy Now</button>
       </div>
         </div>
 

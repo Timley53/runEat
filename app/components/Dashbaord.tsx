@@ -4,12 +4,17 @@ import React, {useState} from 'react'
 import Nav from './Nav'
 import { store } from "../GlobalRedux/store";
 import TanstackProvider from "./TanstackProvider";
+import { SessionProvider } from "next-auth/react";
 
 
-function Dashbaord({children } : React.PropsWithChildren) {
+
+function Dashbaord({children } : {
+  children: React.ReactNode
+}) {
     const [expand, setExpand] = useState<boolean>(false)
   return (
-    
+    <SessionProvider>
+
     <TanstackProvider>
       <Provider store={store}>
 
@@ -24,6 +29,7 @@ function Dashbaord({children } : React.PropsWithChildren) {
         </div>
       </Provider>
     </TanstackProvider>
+    </SessionProvider>
   )
 }
 

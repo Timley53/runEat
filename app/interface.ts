@@ -1,3 +1,4 @@
+import React from "react";
 
 
 export interface AppContextType {
@@ -13,7 +14,14 @@ export interface Cartprops{
 export interface InitialStateType {
     cart: CartType[] | [];
     productQuantity: number,
-    favorite: favoriteType[] | []
+    favorite: favoriteType[] | [],
+    checkoutList: CartType[] | []
+    Orders:OrderType[],
+    loading: boolean,
+    error: boolean,
+    errorMessage: string | unknown,
+    name: string | null | undefined;
+    authorized: boolean;
 }
 
 export interface favoriteType {
@@ -30,6 +38,7 @@ export interface CartType {
     img:string,
     price: number,
     title: string;
+    size: string;
 }
 export interface newCartType {
     id: string,
@@ -43,6 +52,12 @@ export interface uiInitialState {
     pizza: boolean;
     burger: boolean;
     desert: boolean;
+    pending: boolean;
+    completed: boolean;
+    canceled: boolean;
+    modal: boolean;
+    modalDetails: object;
+    cartNotification: boolean;
 }
 
 export interface pizzaType {
@@ -66,9 +81,38 @@ export interface pizzaRecipeType {
 export interface pricedDataType {
     id: string,
     image_url: string,
-    pubisher: string,
+    publisher: string,
     title: string,
     price: number,
     quantity: number,
     favorite: boolean
 }
+
+export interface SingleOrderType{
+    productId: string,
+    quantity: number,
+    title: string,
+    price: number,
+    size: string;
+
+
+}
+
+export interface OrderType {
+    id: string,
+    orderedBy: string,
+    orders: CartType[];
+    OverallPrice: number;
+    time: string;
+    pending: boolean,
+    completed: boolean,
+    canceled: boolean,
+}
+
+export interface OrderModalType {
+    orderDetails?: OrderType  | null;
+    setOrderDetails: React.Dispatch<React.SetStateAction<OrderType | null>>;
+    modal: boolean ;
+    setModal:React.Dispatch<React.SetStateAction<boolean>> 
+  
+  }

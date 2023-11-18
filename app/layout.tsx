@@ -6,7 +6,7 @@ import { AppContext } from './Context'
 import Dashbaord from './components/Dashbaord'
 
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] }) 
 
 export const metadata: Metadata = {
   title: 'runEat',
@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
 
-        <Dashbaord children={<>{children}</>} />
+        <Dashbaord children={children} />
 
        
 

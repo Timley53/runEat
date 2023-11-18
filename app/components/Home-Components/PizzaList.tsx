@@ -5,7 +5,8 @@ import { favoriteType, pizzaRecipeType, pizzaType, pricedDataType } from '@/app/
 import Pagination from '../Pagination';
 import { useSelector } from 'react-redux';
 import { Rootstate } from '@/app/GlobalRedux/store';
-
+// import BarWave from "react-cssfx-loading/";
+import {Hypnosis} from 'react-cssfx-loading'
 
 function PizzaList() {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -17,6 +18,8 @@ function PizzaList() {
 
   const { data, isLoading, isError, error}  = useQuery({
     queryKey: ['pizzaList'],
+    staleTime: Infinity,
+    
     queryFn: async () => {
       const res = await fetch(url)
       let data = await res.json()
@@ -44,13 +47,17 @@ function PizzaList() {
   const start = (currentPage - 1) * dataPerPage
   const end = currentPage * dataPerPage
 
-  if(isLoading) return (<div className='flex w-full h-full justify-center item-center'>Getting your delicious pizza </div>)
+  if(isLoading) return (<div className='flex w-[300px] m-auto h-[300px] justify-center item-center  my-10'>
+    <Hypnosis color="#FF0000" width="100px" height="50px" duration="3s" className="my-3"/>
+
+    <h2 className=" my-4">Getting your delicious Pizzas..</h2>
+     </div>)
 
   if(isError) return <div className="flex w-full h-full justify-center item-center">{error.message}</div>
 
   return (
     <div className='w-full h-full flex flex-col'>
-    <div className='w-full border-2 flex flex-wrap sm:justify-start md:justify-start md:items-start  h-[full] my-2 '>
+    <div className='w-full flex flex-wrap sm:justify-start md:justify-start md:items-start  h-[full] my-2 '>
       {data?.slice?.(start, end).map((pizz: pricedDataType) => {
 
         const favorite =  favorites.some((fav:favoriteType) => fav?.id === pizz.id)
@@ -58,7 +65,7 @@ function PizzaList() {
         return <ProductComp key={pizz.id} {...pizz} favorite={favorite} />
       })}
     </div>
-<Pagination currentPage={currentPage} pages={pages} setCurrentPage={setCurrentPage} />
+<Pagination currentPage={currentPage} pages={pages} setCurrentPage={setCurrentPage}/>
 
       </div>
   )

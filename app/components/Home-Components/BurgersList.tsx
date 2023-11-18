@@ -1,9 +1,10 @@
 import React , {useState}from 'react'
 import ProductComp from './ProductCOmp'
 import { useQuery } from '@tanstack/react-query'
-import { pizzaRecipeType, pizzaType, pricedDataType } from '@/app/interface';
+import { favoriteType, pizzaRecipeType, pizzaType, pricedDataType } from '@/app/interface';
 import Pagination from '../Pagination';
 import { useSelector } from 'react-redux';
+import { Rootstate } from '@/app/GlobalRedux/store';
 
 
 
@@ -18,6 +19,7 @@ function BurgersList() {
 
   const { data, isLoading, isError, error}  = useQuery({
     queryKey: ['burgersList'],
+    staleTime: Infinity,
     queryFn: async () => {
       const res = await fetch(url)
       let data = await res.json()
@@ -51,7 +53,7 @@ function BurgersList() {
 
   return (
     <div className='w-full h-full flex flex-col'>
-    <div className='w-full border-2 flex flex-wrap sm:justify-start md:justify-start md:items-start  h-[full] my-2 '>
+    <div className='w-full flex flex-wrap sm:justify-start md:justify-start md:items-start  h-[full] my-2 '>
       {data?.slice?.(start, end).map(pizz=> 
       {
         const favorite =  favorites.some((fav:favoriteType) => fav?.id === pizz.id)

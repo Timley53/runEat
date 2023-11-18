@@ -1,25 +1,25 @@
-"use client"
-
-import { changeSize, decreaseCartQuant, deleteCart, increaseCartQuant } from '@/app/GlobalRedux/slice/userSlice'
+import { addCart, addFavorite, changeSize, decreaseCartQuant, deleteCart, increaseCartQuant } from '@/app/GlobalRedux/slice/userSlice'
+import { Rootstate } from '@/app/GlobalRedux/store'
+import { InitialStateType, pizzaType, pricedDataType } from '@/app/interface'
+import React from 'react'
+import  { BsCart4, BsFillCartPlusFill } from "react-icons/bs"
+import  { GrFavorite } from "react-icons/gr"
+import {useSelector, useDispatch} from 'react-redux'
 import { CartType } from '@/app/interface'
-import { log } from 'console'
-import { title } from 'process'
-import React, {useState} from 'react'
-import {MdOutlineCancel} from "react-icons/md"
-import {BsCart4} from "react-icons/bs"
-import { useDispatch } from 'react-redux'
 import Link from 'next/link'
+import { MdFavorite, MdOutlineCancel } from 'react-icons/md'
+import { showCartNotification } from '@/app/GlobalRedux/slice/uiSlice'
 
-function CartComp({id, quantity, img,price, title, size}: CartType) {
+
+
+function CartPageComp({id, quantity, img,price, title, size}:  CartType) {
     const dispatch = useDispatch()
     console.log(quantity)
   return (
-    <article className='flex w-[95%] max-h-40  p-1 my-2 border-2 border-orange-200 rounded-md m-1 '>
+    <article className='flex md:max-w-[320px] md:min-w-[200px] sm:w-[90%]  max-h-40  p-1 my-2 border-2 border-orange-100 rounded-md m-2 items-center bg-orange-50 '>
 
 
-        <div className="p-2 m-1 self-center">
-            <BsCart4/>
-        </div>
+       <img src={img} title={title}  className="w-[100px] h-full  object-contain rounded-md"/>
         
         <div className="flex flex-col text-sm p-2 w-full">
         <Link href={`/Details/${id}`} className='text-[12px] word-wrap' title={title}>{title}</Link> 
@@ -71,4 +71,4 @@ function CartComp({id, quantity, img,price, title, size}: CartType) {
   )
 }
 
-export default CartComp
+export default CartPageComp

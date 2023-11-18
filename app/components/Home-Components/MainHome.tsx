@@ -1,5 +1,5 @@
 "use client"
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import SearchInput from './SearchInput'
 import {AiOutlineSearch, AiOutlineShoppingCart} from 'react-icons/ai'
 import Intro from './Intro';
@@ -11,21 +11,35 @@ import {useSelector, useDispatch} from 'react-redux'
 import { Rootstate } from '@/app/GlobalRedux/store';
 import BurgersList from './BurgersList';
 import DesertList from './AllList';
-import { showDesert } from '@/app/GlobalRedux/slice/uiSlice';
+import { hideCartNotification, showDesert } from '@/app/GlobalRedux/slice/uiSlice';
+import CartNotification from './CartNotification';
 
 
 
 function MainHome({showCart, setShowCart}: Cartprops) {
+  const dispatch = useDispatch()
     const [search, setSearch] = useState<string>('')
     const pizza = useSelector((state: Rootstate) => state.ui.pizza)
     const burger = useSelector((state: Rootstate) => state.ui.burger)
     const desert = useSelector((state: Rootstate) => state.ui.desert)
-    const dispatch = useDispatch()
+    const cartNotification = useSelector((state: Rootstate) => state.ui.cartNotification)
+
+
+
+    // useEffect(()=>{
+
+    //     setTimeout(()=> {
+    //       dispatch(hideCartNotification())
+    //     }, 3000)
+    //     console.log('tt')
+
+    // },[cartNotification])
 
     
 
   return (
-    <div className={`md:w-[70%] ${showCart ? 'sm:hidden md:flex' : 'md:flex sm:flex'} sm:w-[100%]  flex-col h-full md:p-2 sm:p-1`}>
+    <div className={`md:w-[70%] ${showCart ? 'sm:hidden md:flex' : 'md:flex sm:flex'} sm:w-[100%]  flex-col h-full md:p-2 sm:p-1 `}>
+
 
         <Intro/>
 

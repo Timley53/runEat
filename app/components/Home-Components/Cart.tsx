@@ -1,19 +1,88 @@
-import { Cartprops } from '@/app/interface'
-import React from 'react'
+"use client"
+
+import { Cartprops, OrderType } from '@/app/interface'
+import React, { useState } from 'react'
 import CartComp from '../CartComp/CartComp'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Rootstate } from '@/app/GlobalRedux/store'
 import { MdCancel } from 'react-icons/md'
+import { AiOutlineClear } from 'react-icons/ai'
+import generateUniqueId from 'generate-unique-id'
+import { addOrder, clearCart, singInG } from '@/app/GlobalRedux/slice/userSlice'
+import {onAuthStateChanged} from 'firebase/auth/cordova'
+import CheckoutModal from './CheckoutModal'
+import { auth } from '@/app/resource/firebase'
+import { useRouter } from 'next/router'
 
-function Cart({showCart, setShowCart}: Cartprops) {
+interface CartAndModal extends Cartprops {
+  isOpen: boolean,
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,  
+   setCheckoutDetail: React.Dispatch<React.SetStateAction<OrderType | null>>,
+    checkoutDetails: OrderType | null
+}
+
+const createDate: () => string = () => {
+const day = new Date().getDate() + ''
+const month = new Date().getMonth() + ''
+const year = new Date().getFullYear() + ''
+
+  const date = `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`
+
+  return date
+}
+
+function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, checkoutDetails}: CartAndModal) {
   const cart =  useSelector((state: Rootstate) => state.user.cart)
+  const dispatch = useDispatch()
+
+// const router = useRouter()
+  
+
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat('en-US').format(num)
   }
 
+
+  const checkOutOrder = () => {
+
+    onAuthStateChanged(auth, (user)=>{
+      if(user){
+        window.location.href = '/Orders'  
+      }else{
+          //  router.push('/Order')   
+         dispatch<void | any>(singInG())
+
+        }
+    })
+
+
+   const total = cart?.reduce((acc, curr) =>{
+      return acc + (curr.price * curr.quantity)
+    }, 0) 
+    const newOrder:OrderType = {
+      id: generateUniqueId({
+        length: 9,
+        useLetters: true,
+        useNumbers: true,
+      }),
+      OverallPrice: total ,
+      time: createDate(),
+      pending: true,
+      completed: false,
+      canceled: false,
+      orderedBy: '',
+      orders: [...cart],
+    }
+    dispatch(addOrder(newOrder));
+    setCheckoutDetail(newOrder)
+
+    setIsOpen(true)
+  }
+
   return (
     <div className={`bg-slate-100 md:h-screen md:w-[30%] sm:w-[100%] sm:h-[100%]  md:sticky md:top-0 flex-col items-center  md:right-0 ${showCart ? 'sm:flex md:flex' : 'sm:hidden md:flex'} py-2 `}>
+    
 
     <div className="flex w-[100%]   items-center">
       <button   className='md:hidden inline self-start p-2 text-2xl text-rose-500' onClick={()=>setShowCart(!showCart)}><MdCancel/></button>
@@ -50,12 +119,21 @@ function Cart({showCart, setShowCart}: Cartprops) {
     }, 0) + (cart?.length * 2) }</span>
   </div>
 
-<button className='bg-orange-500 text-white hover:bg-orange-400 mx-auto my-4 p-2 w-[80%]'>Checkout</button>
+
+    
+    <div className="w-full flex px-2">
+<button className='bg-orange-500 text-white hover:bg-orange-400 mx-auto my-4 p-2 w-[80%] rounded-sm' onClick={()=>checkOutOrder()}>Checkout</button>
+
+<span className="p-2 px-3 mx-2 bg-rose-500 self-center rounded-sm  hover:bg-rose-400 text-white" onClick={()=> dispatch(clearCart())}>
+  <AiOutlineClear/>
+</span>
+
     </div>
 
 
-        
-        
+
+    </div>
+    
     </div>
   )
 }
