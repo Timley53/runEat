@@ -40,7 +40,38 @@ margin-right: 10px;
 
 
 
+.check-Scroll::-webkit-scrollbar {
+  width: 10px; /* Set the width of the scrollbar */
+  /* display: none; */
+  /* padding: 5px; */
+  border-radius: 10px;
+  /* color: red;  */
+}
 
+
+.check-Scroll::-webkit-scrollbar-track {
+  /* background-color: red; Set the background color of the track */
+  color: red; 
+  /* padding: 3px; */
+  width: 8px;
+}
+
+.check-Scroll::-webkit-scrollbar-thumb {
+  /* background-color: red; Set the color of the thumb */
+  margin: 0 3px;
+  width: 8px;
+}
+
+.check-Scroll::-webkit-scrollbar-thumb:hover {
+  /* width: 8px; */
+  background-color: #555; /* Set the color of the thumb on hover */
+}
+
+
+/* 
+
+
+*/
 
 .cart-scroll::-webkit-scrollbar-track {
   background-color: #f1f1f1; /* Set the background color of the track */
@@ -65,6 +96,18 @@ height: 25px;
 
 }
 
+.check-bg{
+  background-image: url('./resource/pexels-narda-yescas-1566837.jpg');
+  background-size: cover ;
+  object-fit: fill;
+  background-position: center;
+  
+}
+
+.min-h{
+  min-height: 100vh;
+
+}
 /* .modal {
   transition: all 2s;
   transition-delay: 1s;

@@ -10,15 +10,18 @@ import { Fragment, useState } from 'react'
 import { ImCross } from 'react-icons/im'
 import { useDispatch, useSelector } from 'react-redux'
 import { Context } from 'vm'
+import AYS from '../AYS'
+import { cancelOrder } from '@/app/GlobalRedux/slice/userSlice'
+import { showConfirm } from '@/app/GlobalRedux/slice/uiSlice'
 
 
 
 
 
 export default function OrderModal() {
-// const modal = useSelector((state: Rootstate) => state.ui.modal)
 const dispatch = useDispatch()
 const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext)
+
 
 // const {id, OverallPrice,time, pending, canceled, completed, orderedBy, orders} = orderDetails
 
@@ -73,7 +76,9 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
 
                       
                   </Dialog.Title>
-
+            <address className='w-full text-left p-2'>
+              Address:{orderDetails?.address}
+            </address>
                  
                  {
                  orderDetails?.orders.map((order: CartType)=> {
@@ -87,6 +92,7 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
                       <p className='mx-1 text-sm'>
   
                       {order.title} 
+                      
                       </p>
   
                     </article>
@@ -123,7 +129,14 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-rose-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
-                      onClick={() => setModal(false)}
+                      onClick={() => {
+                        dispatch(showConfirm({
+                          id: orderDetails?.id,
+                          type: 'cancel order',
+                          modal: true,
+                        }))
+                        setModal(false)
+                      }}
                     >
                       Cancel Order
                     </button>
@@ -137,3 +150,5 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
     </>
   )
 }
+
+

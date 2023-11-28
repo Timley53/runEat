@@ -1,19 +1,27 @@
 "use client"
 
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Rootstate } from '../GlobalRedux/store'
+import { Rootstate, } from '../GlobalRedux/store'
 import Pagination from '../components/Pagination'
-import { CartType } from '../interface'
+import { CartType, OrderType } from '../interface'
 import CartComp from '../components/CartComp/CartComp'
-import { singInG } from '../GlobalRedux/slice/userSlice'
+import { addOrder, clearCart, getState, listenOnAuth, setAuthorize, singInG } from '../GlobalRedux/slice/userSlice'
 import GoogleButton from 'react-google-button'
 import CartPageComp from './CartPageComp'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../resource/firebase'
+import generateUniqueId from 'generate-unique-id'
+import { createDate } from '../components/Home-Components/Cart'
+import { AiOutlineClear } from 'react-icons/ai'
+import Link from 'next/link'
 
 function Carts() {
     const [currentPage, setCurrentPage] = useState<number>(1)
     const cart = useSelector((state: Rootstate) => state.user.cart)
     const authorize = useSelector((state: Rootstate) => state.user.authorized)
+  const userGlobal = useSelector((state: Rootstate) => state.user )
+
     const dispatch = useDispatch()
 
     const dataPerPage = 8;
@@ -23,10 +31,94 @@ function Carts() {
     const end = currentPage * dataPerPage
 
 
+    useEffect(() => {
+      dispatch(getState())
+    }, [])
+
+  
+  // const router = useRouter()
+    
+  const total = cart?.reduce((acc, curr) =>{
+    return acc + (curr.price * curr.quantity)
+  }, 0) 
+  
+    const formatNumber = (num: number) => {
+      return new Intl.NumberFormat('en-US').format(num)
+    }
+  
+  
+    const checkOutOrder = () => {
+  
+      onAuthStateChanged(auth, (user)=>{
+        if(user){
+          window.location.href = '/Orders'  
+        }else{
+           dispatch<void | any>(singInG())
+  
+          }
+      })
+  
+  
+     
+      const newOrder:OrderType = {
+        id: generateUniqueId({
+          length: 9,
+          useLetters: true,
+          useNumbers: true,
+        }),
+        OverallPrice: total ,
+        time: createDate(),
+        pending: true,
+        completed: false,
+        canceled: false,
+        orderedBy: '',
+        orders: [...cart],
+      }
+      dispatch(addOrder(newOrder));
+    //   setCheckoutDetail(newOrder)
+  
+    //   setIsOpen(true)
+    }
+
+    useEffect(() => {
+      
+        // dispatch<any>(listenOnAuth())
+        const unsubscribe = onAuthStateChanged(auth, (user) =>{
+          if(user){
+           dispatch( setAuthorize(true))
+          }else{
+            dispatch( setAuthorize(false))
+
+          }
+        })
+
+       return () => unsubscribe()
+    }, [])
+    
+  
+
     if(authorize){
         return (
             <div className="w-[100%] h-[100%]   flex flex-col p-2 items-center sm:mb-10">
             <span className="mx-auto text-xl">Carts</span>
+
+<div className="flex w-full p-1 items-center justify-between ">
+    <article className='text-base'>
+        <small>Price:</small>${total}
+    </article>
+
+ <div className="w-[60%] flex px-2  items-end justify-end">
+
+<Link href={"/Checkout"} className={`${cart.length < 1 ? "hidden" : ''} bg-orange-500 text-white hover:bg-orange-400 mx-3 self-center  my-4 p-2 w-[9rem] text-center  rounded-sm`} onClick={()=>checkOutOrder()}>Checkout</Link>
+
+
+<button className="p-2 px-2 mx-1 bg-rose-500 self-center rounded-sm   hover:bg-rose-400 text-white md:w-[7.5rem] flex items-center cursor-pointer" onClick={()=> dispatch(clearCart())}> <span className='sm:hidden md:flex text-sm mx-2 '>Clear cart</span>
+  <AiOutlineClear/>
+</button>
+
+    </div>
+
+</div>
 
 
             <div className="md:w-[90%] sm:w-[100%] flex flex-wrap sm:justify-start self-center md:justify-center items-center  h-[full] my-2 ">

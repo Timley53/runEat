@@ -1,11 +1,11 @@
 "use client"
-import  react, {useState} from "react"
+import  react, {useEffect, useState} from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Rootstate } from "../GlobalRedux/store"
 import { favoriteType } from "../interface"
 import FavoriteComp from "./FavoriteComp"
 import Pagination from "../components/Pagination"
-import { singInG } from "../GlobalRedux/slice/userSlice"
+import { getState, singInG } from "../GlobalRedux/slice/userSlice"
 import GoogleButton from "react-google-button"
 
 
@@ -14,6 +14,8 @@ function Favorites(){
   const [currentPage, setCurrentPage] = useState<number>(1)
   const favorite = useSelector((state : Rootstate) => state.user.favorite)
   const authorized = useSelector((state: Rootstate)=>state.user.authorized )
+  const userGlobal = useSelector((state: Rootstate) => state.user )
+
   // console.log(favorite)
   const dispatch = useDispatch()
 
@@ -22,6 +24,12 @@ function Favorites(){
 
   const start = (currentPage - 1) * dataPerPage
   const end = currentPage * dataPerPage
+
+
+  useEffect(() => {
+    dispatch(getState())
+  }, [])
+  
 
     if(authorized){
 

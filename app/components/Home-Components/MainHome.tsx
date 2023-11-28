@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import SearchInput from './SearchInput'
 import {AiOutlineSearch, AiOutlineShoppingCart} from 'react-icons/ai'
 import Intro from './Intro';
-import { Cartprops } from '@/app/interface';
+import { Cartprops, pizzaRecipeType, pricedDataType } from '@/app/interface';
 import Banner from './Banner';
 import PizzaList from './PizzaList';
 import Tab from './Tab';
@@ -13,16 +13,21 @@ import BurgersList from './BurgersList';
 import DesertList from './AllList';
 import { hideCartNotification, showDesert } from '@/app/GlobalRedux/slice/uiSlice';
 import CartNotification from './CartNotification';
+import SearchList from './SearchList';
+import SearchCloseBtn from './SearchCloseBtn';
+import { useQuery } from '@tanstack/react-query';
 
 
 
 function MainHome({showCart, setShowCart}: Cartprops) {
   const dispatch = useDispatch()
     const [search, setSearch] = useState<string>('')
+    const [isSearch, setIsSearch] = useState<boolean>(false)
     const pizza = useSelector((state: Rootstate) => state.ui.pizza)
     const burger = useSelector((state: Rootstate) => state.ui.burger)
     const desert = useSelector((state: Rootstate) => state.ui.desert)
     const cartNotification = useSelector((state: Rootstate) => state.ui.cartNotification)
+    
 
 
 
@@ -35,6 +40,15 @@ function MainHome({showCart, setShowCart}: Cartprops) {
 
     // },[cartNotification])
 
+
+    // function submitSearchForm(){
+     
+    //   return  { data, isLoading, isError, error}
+    
+    // }
+
+    // const { data, isLoading, isError, error} = 
+
     
 
   return (
@@ -44,10 +58,9 @@ function MainHome({showCart, setShowCart}: Cartprops) {
         <Intro/>
 
 <form className="search flex items-center">
-<SearchInput search={search} setSearch={setSearch}/>
-    <button className='text-xl mx-2 p-2 md:px-6 sm:px-3  bg-slate-100 hover:bg-slate-300 rounded-md'>
-    <AiOutlineSearch/>
-    </button>
+<SearchInput isSearch={isSearch} setIsSearch={setIsSearch} search={search} setSearch={setSearch}/>
+<SearchCloseBtn isSearch={isSearch} setIsSearch={setIsSearch}/>
+   
 
     <span className={` bg-orange-300 p-2 md:p6-4  sm:px-3 text-2xl mx-1 rounded-md hover:bg-orange-100 cursor-pointer md:hidden`} onClick={()=>setShowCart(true)}>
     <AiOutlineShoppingCart/>
@@ -57,7 +70,7 @@ function MainHome({showCart, setShowCart}: Cartprops) {
     <Tab/>
 
 {
-pizza && <PizzaList/> || burger && <BurgersList/> || desert && <DesertList/> 
+!isSearch && (pizza && <PizzaList/> || burger && <BurgersList/> || desert && <DesertList/> ) || isSearch && <SearchList search={search}/>
 }
 
     </div>

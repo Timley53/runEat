@@ -18,7 +18,7 @@ function DesertList() {
 
   const { data, isLoading, isError, error}  = useQuery({
     queryKey: ['dessertList'] ,
-    staleTime: Infinity,
+    staleTime: 0,
     queryFn: async () => {
       const res = await fetch(url)
       let data = await res.json()

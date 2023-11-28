@@ -13,6 +13,9 @@ const initialState: uiInitialState = {
     modal: true,
     modalDetails: {},
     cartNotification: false,
+    confirmation: false,
+    confirmationType: '',
+    confirmationTypeId: ''
 
 }
 
@@ -63,10 +66,18 @@ const uiSlice = createSlice({
 
       hideCartNotification: (state) => {
         state.cartNotification = false
-      }
+      },
+       showConfirm: (state, action) => {
+      state.confirmation = action.payload.modal,
+      state.confirmationType = action.payload.type
+      state.confirmationTypeId = action.payload.id
+       }
+       
+
+
     }
 })
 
-export const {showPizza, showBuger, showDesert, showCanceled,showCompleted,showPending,openModal, closeModal, showCartNotification, hideCartNotification } = uiSlice.actions
+export const {showPizza, showBuger, showDesert, showCanceled,showCompleted,showPending,openModal, closeModal, showCartNotification, hideCartNotification, showConfirm } = uiSlice.actions
 
 export default uiSlice.reducer

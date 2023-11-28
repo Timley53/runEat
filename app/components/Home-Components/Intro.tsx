@@ -16,8 +16,8 @@ function Intro() {
   // const {data : session} = useSession()
   const name = useSelector((state: Rootstate)=> state.user.name)
   const authorized = useSelector((state: Rootstate)=> state.user.authorized)
-  console.log(name)
-  console.log(authorized)
+  // console.log(name)
+  // console.log(authorized)
   
   // const [name, setName] = useState<string | null>('')
   const firstNameFxn = (name: string | null | undefined ) => {

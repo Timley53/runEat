@@ -15,7 +15,7 @@ export interface InitialStateType {
     cart: CartType[] | [];
     productQuantity: number,
     favorite: favoriteType[] | [],
-    checkoutList: CartType[] | []
+    checkoutList: OrderType | null;
     Orders:OrderType[],
     loading: boolean,
     error: boolean,
@@ -58,6 +58,9 @@ export interface uiInitialState {
     modal: boolean;
     modalDetails: object;
     cartNotification: boolean;
+    confirmation: boolean;
+    confirmationType: string;
+    confirmationTypeId: string;
 }
 
 export interface pizzaType {
@@ -101,12 +104,13 @@ export interface SingleOrderType{
 export interface OrderType {
     id: string,
     orderedBy: string,
-    orders: CartType[];
+    orders: CartType[] ;
     OverallPrice: number;
     time: string;
     pending: boolean,
     completed: boolean,
     canceled: boolean,
+    address?: string
 }
 
 export interface OrderModalType {

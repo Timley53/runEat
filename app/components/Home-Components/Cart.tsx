@@ -8,11 +8,12 @@ import { Rootstate } from '@/app/GlobalRedux/store'
 import { MdCancel } from 'react-icons/md'
 import { AiOutlineClear } from 'react-icons/ai'
 import generateUniqueId from 'generate-unique-id'
-import { addOrder, clearCart, singInG } from '@/app/GlobalRedux/slice/userSlice'
-import {onAuthStateChanged} from 'firebase/auth/cordova'
+import { addOrder, clearCart, setCheckOrder, singInG } from '@/app/GlobalRedux/slice/userSlice'
+import {onAuthStateChanged} from 'firebase/auth'
 import CheckoutModal from './CheckoutModal'
 import { auth } from '@/app/resource/firebase'
-import { useRouter } from 'next/router'
+import Router from 'next/router'
+import Link from 'next/link'
 
 interface CartAndModal extends Cartprops {
   isOpen: boolean,
@@ -21,7 +22,7 @@ interface CartAndModal extends Cartprops {
     checkoutDetails: OrderType | null
 }
 
-const createDate: () => string = () => {
+export const createDate: () => string = () => {
 const day = new Date().getDate() + ''
 const month = new Date().getMonth() + ''
 const year = new Date().getFullYear() + ''
@@ -31,11 +32,15 @@ const year = new Date().getFullYear() + ''
   return date
 }
 
+
+
 function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, checkoutDetails}: CartAndModal) {
   const cart =  useSelector((state: Rootstate) => state.user.cart)
-  const dispatch = useDispatch()
+  const userGlobal = useSelector((state: Rootstate) => state.user )
 
-// const router = useRouter()
+  const dispatch = useDispatch()
+  
+
   
 
 
@@ -46,20 +51,14 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
 
   const checkOutOrder = () => {
 
-    onAuthStateChanged(auth, (user)=>{
-      if(user){
-        window.location.href = '/Orders'  
-      }else{
-          //  router.push('/Order')   
-         dispatch<void | any>(singInG())
+    // =============
 
-        }
-    })
-
-
-   const total = cart?.reduce((acc, curr) =>{
+    const total = cart?.reduce((acc, curr) =>{
       return acc + (curr.price * curr.quantity)
     }, 0) 
+
+    if(cart.length < 1) return
+
     const newOrder:OrderType = {
       id: generateUniqueId({
         length: 9,
@@ -74,10 +73,13 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
       orderedBy: '',
       orders: [...cart],
     }
-    dispatch(addOrder(newOrder));
-    setCheckoutDetail(newOrder)
 
-    setIsOpen(true)
+    
+        dispatch(setCheckOrder(newOrder))
+        // Router.push('/Checkout')
+        // window.location('Checkout')
+
+      
   }
 
   return (
@@ -102,15 +104,12 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
     <div className="check-out flex flex-col w-full sm:mb-8 md:mb-0">
   <div className="cart-total flex w-full justify-between p-3">
     <span className='font-bold text-sm'>Cart total:</span>
-    <span className='text-sm'>${formatNumber( cart.reduce((acc, curr) =>{
+    <span className='text-sm'>${formatNumber( cart?.reduce((acc, curr) =>{
       return acc + (curr.price * curr.quantity)
     }, 0))}</span>
   </div>
 
-  <div className="w-full flex justify-between text-sm p-3 py-0">
-    <span>Delivery fee</span>
-    <span>${cart?.length * 2}</span>
-  </div>
+  
 
   <div className="total flex justify-between text-sm p-3 border border-r-0 border-l-0 my-1">
     <span>Total</span>
@@ -122,12 +121,11 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
 
     
     <div className="w-full flex px-2">
-<button className='bg-orange-500 text-white hover:bg-orange-400 mx-auto my-4 p-2 w-[80%] rounded-sm' onClick={()=>checkOutOrder()}>Checkout</button>
+<Link href={'/Checkout'} className={` ${cart.length < 1 ? "hidden" : ''} bg-orange-500 text-white hover:bg-orange-400 mx-auto text-center my-4 p-2 w-[80%] rounded-sm`} onClick={()=>checkOutOrder()}>Checkout</Link>
 
 <span className="p-2 px-3 mx-2 bg-rose-500 self-center rounded-sm  hover:bg-rose-400 text-white" onClick={()=> dispatch(clearCart())}>
   <AiOutlineClear/>
 </span>
-
     </div>
 
 

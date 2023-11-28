@@ -1,6 +1,6 @@
 "use client"
 
-import { CartType, InitialStateType, favoriteType,  } from "@/app/interface"
+import { CartType, InitialStateType, OrderType, favoriteType,  } from "@/app/interface"
 import { createAsyncThunk, createSlice} from "@reduxjs/toolkit" 
 import { signInWithPopup } from "firebase/auth"
 import { onAuthStateChanged } from "firebase/auth/cordova"
@@ -12,7 +12,7 @@ const initialState: InitialStateType = {
     productQuantity: 0,
     favorite: [],
     Orders: [],
-    checkoutList: [], 
+    checkoutList: null, 
     name: '',
     authorized: false,
 // state-loading
@@ -46,7 +46,7 @@ try{
 
 
     })
-    console.log(subscribe)
+    // console.log(subscribe)
 
     return nme
 
@@ -74,10 +74,15 @@ const useSlice = createSlice({
             } else{
                 state.cart = [...state.cart,{...action.payload}]
             }
+
+            localStorage.setItem('state', JSON.stringify({...state}))
         },
 
         removeCart: (state, action) => {
                 state.cart = state.cart.filter(cart => cart.id !== action.payload)
+
+                localStorage.setItem('state', JSON.stringify({...state}))
+
         },
 
         increaseCartQuant: (state, action) => {
@@ -89,6 +94,8 @@ const useSlice = createSlice({
                     return cart
                 }
             })
+            localStorage.setItem('state', JSON.stringify({...state}))
+
         },
         decreaseCartQuant: (state, action) => {
             state.cart = state.cart.map( (cart: CartType) => {
@@ -101,20 +108,137 @@ const useSlice = createSlice({
             })
 
             state.cart = state.cart.filter((cart:CartType) => cart.quantity !== 0)
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
         },
         deleteCart: (state, action) => {
             state.cart = state.cart.filter((cart: CartType) => cart.id !== action.payload)
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
         },
+
+
+        //================================
+        // ===============================
+
+        increaseCheckOrderQuantity: (state, action) => {
+            if(state.checkoutList){
+                
+                            state.checkoutList = {
+                                ...state.checkoutList,
+                                
+                                orders: state.checkoutList?.orders.map((cart : CartType) => {
+                                    if(cart.id === action.payload){
+                                        return {
+                                            ...cart,
+                                            quantity: cart.quantity + 1
+                
+                                        }
+                                    }else{
+                                        return cart
+                                    }
+                                })
+                            }
+
+            }
+            localStorage.setItem('state', JSON.stringify({...state}))
+
+        },
+
+        decreaseCheckOrderQuantity: (state, action) => {
+            if(state.checkoutList){
+                
+                            state.checkoutList = {
+                                ...state.checkoutList,
+                                
+                                orders: state.checkoutList?.orders.map((cart : CartType) => {
+                                    if(cart.id === action.payload){
+                                        return {
+                                            ...cart,
+                                            quantity: cart.quantity - 1
+                
+                                        }
+                                    }else{
+                                        return cart
+                                    }
+                                })
+                            }
+
+            }
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
+        },
+
+        changeOrderSize: (state, action) => {
+            if(state.checkoutList){
+                
+                            state.checkoutList = {
+                                ...state.checkoutList,
+                                
+                                orders: state.checkoutList?.orders.map((cart : CartType) => {
+                                    if(cart.id === action.payload.id){
+                                        return {
+                                            ...cart,
+                                            size: action.payload.size
+                
+                                        }
+                                    }else{
+                                        return cart
+                                    }
+                                })
+                            }
+
+            }
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
+        },
+
+        deleteSingleOrder: (state, action) => {
+            if(state.checkoutList){
+
+                state.checkoutList = {
+                    ...state.checkoutList,
+                    orders: state.checkoutList.orders.filter((cart: CartType) => cart.id !== action.payload)
+                }
+            }
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
+        },
+
+        clearOrder: (state) => {
+            state.checkoutList = null
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
+        },
+
+        cancelOrder: (state, action) => {
+            state.Orders = state.Orders.filter((order: OrderType) => order.id !== action.payload)
+        },
+
+        // ==================
+        // ===============
 
         addFavorite: (state, action) => {
             if(state.favorite.some((fav: favoriteType)=> fav.id === action.payload.id)){
                 return
             }
             state.favorite = [...state.favorite, {...action.payload}]
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
         },
         removeFav: (state, action) => {
             // console.log(action.payload)
             state.favorite = state.favorite.filter((fav: favoriteType) => fav.id !== action.payload.id)
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
         },
         changeSize: (state, action) => {
             state.cart = state.cart.map((cartIndex: CartType) => {
@@ -127,16 +251,51 @@ const useSlice = createSlice({
                     return cartIndex
                 } 
             })
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
+        },
+        setAuthorize: (state, action) => {
+            state.authorized = action.payload
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
         },
 
         addOrder: (state, action) => {
             state.Orders = [...state.Orders, action.payload]
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
         },
         clearCart: (state) => {
             state.cart = []
-        }
 
+            localStorage.setItem('state', JSON.stringify({...state}))
+
+        },
+        setCheckOrder: (state, action) => {
+            state.checkoutList = action.payload
+
+            localStorage.setItem('state', JSON.stringify({...state}))
+
+        },
+
+        getState: (state) => {
+            const savedState: string | null | any = localStorage.getItem('state')
+            // console.log(savedState)
+            const parsedState = JSON.parse(savedState)
+            // console.log(parsedState)
+
+            if( parsedState == null) return 
+
+            if(parsedState && typeof parsedState == "object"){
+                state = parsedState
+                // console.log(state)
+            }
+        }
         
+
        
     },
 
@@ -187,6 +346,6 @@ const useSlice = createSlice({
     }
 })
 
-export const {addCart, removeCart,increaseCartQuant, decreaseCartQuant, deleteCart, addFavorite, removeFav, changeSize, addOrder, clearCart } = useSlice.actions
+export const {addCart, removeCart,increaseCartQuant, decreaseCartQuant, deleteCart, addFavorite, removeFav, changeSize, addOrder, clearCart, setAuthorize, setCheckOrder, increaseCheckOrderQuantity, decreaseCheckOrderQuantity,changeOrderSize,deleteSingleOrder, clearOrder, getState, cancelOrder } = useSlice.actions
 
 export default useSlice.reducer

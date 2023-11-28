@@ -1,13 +1,13 @@
 "use client"
 
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import OrderTabs from '../components/OrderComponents/OrderTabs'
 import Pending from '../components/OrderComponents/Pending'
 import { useDispatch, useSelector } from 'react-redux'
 import { Rootstate } from '../GlobalRedux/store'
 import { ImCross } from 'react-icons/im'
 import { closeModal } from '../GlobalRedux/slice/uiSlice'
-import { singInG } from '../GlobalRedux/slice/userSlice'
+import { getState, setAuthorize, singInG } from '../GlobalRedux/slice/userSlice'
 import OrderModal from '../components/OrderComponents/Modal'
 import { OrderType } from '../interface'
 import { OrderContext } from '../Context'
@@ -16,6 +16,9 @@ import Canceledwrapper from '../components/OrderComponents/CanceledWrapper'
 import Canceled from '../components/OrderComponents/Canceled'
 import { signIn, useSession } from 'next-auth/react'
 import GoogleButton from 'react-google-button'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../resource/firebase'
+import AYS from '../components/AYS'
 
 
 interface OrderContextObjType {
@@ -24,16 +27,42 @@ interface OrderContextObjType {
 
 function Orders() {
   // const modal = useSelector((state: Rootstate) => state.ui.modal)
+  const confirmation = useSelector((state: Rootstate) => state.ui.confirmation)
   const modalDetails = useSelector((state: Rootstate) => state.ui.modalDetails)
   const pending = useSelector((state: Rootstate) => state.ui.pending)
   const canceled = useSelector((state: Rootstate) => state.ui.canceled)
   const completed = useSelector((state: Rootstate) => state.ui.completed)
   const authorized = useSelector((state: Rootstate)=> state.user.authorized)
 
+  const userGlobal = useSelector((state: Rootstate) => state.user )
+
   const [modal, setModal] = useState<boolean>(false)
   const [orderDetails, setOrderDetails] = useState<OrderType | null>(null)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+      
+    // dispatch<any>(listenOnAuth())
+    const unsubscribe = onAuthStateChanged(auth, (user) =>{
+      if(user){
+       dispatch( setAuthorize(true))
+      }else{
+        dispatch( setAuthorize(false))
+
+      }
+    })
+
+   return () => unsubscribe()
+}, [])
+
+
+    useEffect(() => {
+      dispatch(getState())
+    }, [])
+    
+
+
 
   if(!authorized){
     return(
@@ -68,6 +97,8 @@ function Orders() {
 
         </div>
       } */}
+        { confirmation &&  <AYS setModal={setModal}/>}
+
   {
     <OrderModal/>
   }

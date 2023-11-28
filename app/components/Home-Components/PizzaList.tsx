@@ -18,7 +18,7 @@ function PizzaList() {
 
   const { data, isLoading, isError, error}  = useQuery({
     queryKey: ['pizzaList'],
-    staleTime: Infinity,
+    staleTime: 0,
     
     queryFn: async () => {
       const res = await fetch(url)
@@ -34,7 +34,7 @@ function PizzaList() {
           quantity: 1,
         }
       })
-      console.log(pricedData)
+      // console.log(pricedData)
 
       return pricedData as pricedDataType[]
     }
