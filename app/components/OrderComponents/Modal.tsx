@@ -83,7 +83,7 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
                  {
                  orderDetails?.orders.map((order: CartType)=> {
                   return(
-                    <div className="flex flex-col my-2 rounded-md bg-slate-100 bg-opacity-0.5 p-2">
+                    <div key={order.id} className="flex flex-col my-2 rounded-md bg-slate-100 bg-opacity-0.5 p-2">
 
 
                     
