@@ -47,9 +47,9 @@ function PendingComp({id, OverallPrice,time, pending, canceled, completed, order
         <span className='text-xs text-center'>
 <button className='p-2 px-3 rounded-full text-white bg-emerald-500 hover:bg-emerald-200' onClick={()=>{
   setOrderDetails({
-    id, OverallPrice,time, pending, canceled, completed, orderedBy, orders, address
+    id, OverallPrice, time, pending, canceled, completed, orderedBy, orders, address
   })
-  setModal(true)} }> View</button>
+  setModal(true)} }> View </button>
         </span>
         
     </article>
