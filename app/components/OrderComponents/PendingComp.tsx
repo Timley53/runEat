@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux'
 //   orders: [...cart],
 // }
 
-function PendingComp({id, OverallPrice,time, pending, canceled, completed, orderedBy, orders} : OrderType) {
+function PendingComp({id, OverallPrice,time, pending, canceled, completed, orderedBy, orders, address} : OrderType) {
   const dispatch = useDispatch()
   const {modal, setModal, orderDetails, setOrderDetails} = useContext(OrderContext)
 
@@ -36,7 +36,7 @@ function PendingComp({id, OverallPrice,time, pending, canceled, completed, order
     {orderedBy}
         </span>
 
-        <span className='text-xs text-center'>
+        <span className='text-xs text-center'> 
 {time}
         </span>
 
@@ -47,7 +47,7 @@ function PendingComp({id, OverallPrice,time, pending, canceled, completed, order
         <span className='text-xs text-center'>
 <button className='p-2 px-3 rounded-full text-white bg-emerald-500 hover:bg-emerald-200' onClick={()=>{
   setOrderDetails({
-    id, OverallPrice,time, pending, canceled, completed, orderedBy, orders
+    id, OverallPrice,time, pending, canceled, completed, orderedBy, orders, address
   })
   setModal(true)} }> View</button>
         </span>
