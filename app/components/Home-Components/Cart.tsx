@@ -72,6 +72,7 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
       canceled: false,
       orderedBy: '',
       orders: [...cart],
+      address: ''
     }
 
     
@@ -123,7 +124,7 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
     <div className="w-full flex px-2">
 <Link href={'/Checkout'} className={` ${cart.length < 1 ? "hidden" : ''} bg-orange-500 text-white hover:bg-orange-400 mx-auto text-center my-4 p-2 w-[80%] rounded-sm`} onClick={()=>checkOutOrder()}>Checkout</Link>
 
-<span className="p-2 px-3 mx-2 bg-rose-500 self-center rounded-sm  hover:bg-rose-400 text-white" onClick={()=> dispatch(clearCart())}>
+<span className={` ${cart.length < 1 ? "hidden" : ''} p-2 px-3 mx-2 bg-rose-500 self-center rounded-sm  hover:bg-rose-400 text-white`} onClick={()=> dispatch(clearCart())}>
   <AiOutlineClear/>
 </span>
     </div>

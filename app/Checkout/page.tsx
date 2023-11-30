@@ -32,6 +32,7 @@ function Checkout() {
 
     const formSubmitAddress = (e: React.FormEvent)=> {
       e.preventDefault()
+      
 
       dispatch(addOrder({
         ...cartOrder,
@@ -71,7 +72,7 @@ dispatch(clearOrder())
       </article>
       <article className='flex w-full justify-between p-1 my-1 border-b-2'>
         <span>Shipping</span>
-        <span>${shippingFee }</span>
+        <span>${shippingFee.toFixed(1) }</span>
       </article>
       <article className='flex w-full justify-between p-1 my-1 md:text-sm sm:text-base '>
         <span>Total</span>

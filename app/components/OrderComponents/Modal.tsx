@@ -11,8 +11,11 @@ import { ImCross } from 'react-icons/im'
 import { useDispatch, useSelector } from 'react-redux'
 import { Context } from 'vm'
 import AYS from '../AYS'
-import { cancelOrder } from '@/app/GlobalRedux/slice/userSlice'
+import { cancelOrder, completeOrder, setCheckOrder } from '@/app/GlobalRedux/slice/userSlice'
 import { showConfirm } from '@/app/GlobalRedux/slice/uiSlice'
+import { createDate } from '../Home-Components/Cart'
+import generateUniqueId from 'generate-unique-id'
+import Link from 'next/link'
 
 
 
@@ -21,7 +24,7 @@ import { showConfirm } from '@/app/GlobalRedux/slice/uiSlice'
 export default function OrderModal() {
 const dispatch = useDispatch()
 const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext)
-
+  console.log(orderDetails?.address)
 
 // const {id, OverallPrice,time, pending, canceled, completed, orderedBy, orders} = orderDetails
 
@@ -44,7 +47,7 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center text-center">
+            <div className="flex min-h-full items-center justify-center text-center sm:h-[120vh] md:h-full sm:py-11 md:py-1">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -54,7 +57,7 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="panel w-full transform overflow-y-auto rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all md:w-[60%] sm:w-[85%] sm:h-[80%]  md:max-w-md md:h-[400px]   flex flex-col ">
+                <Dialog.Panel className="panel w-full transform overflow-y-auto rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all md:w-[60%] sm:w-[85%] sm:h-[90%]  md:max-w-md md:h-[400px]   flex flex-col ">
 
                 <button className='p-2 text-red-600 self-end  text-base' onClick={() => setModal(false)}>
             <ImCross/>
@@ -76,9 +79,9 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
 
                       
                   </Dialog.Title>
-            <address className='w-full text-left p-2'>
-              Address:{orderDetails?.address}
-            </address>
+            <div className='w-full text-left p-2'>
+              <i className=''>Address:</i>{orderDetails?.address}
+            </div>
                  
                  {
                  orderDetails?.orders.map((order: CartType)=> {
@@ -125,10 +128,26 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
 
                   
 
-                  <div className="mt-4  ">
+                  <div className="mt-4  flex">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-rose-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
+                      className={`${orderDetails?.pending ? "" : 'hidden' } inline-flex justify-center rounded-md mx-1 border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2`}
+                      onClick={() => {
+                        dispatch(showConfirm({
+                          id: orderDetails?.id,
+                          type: 'complete order',
+                          modal: true,
+                        }))
+                        // dispatch(completeOrder(orderDetails?.id))
+                        setModal(false)
+                      }}
+                    >
+                      Complete Order
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`${orderDetails?.pending ? "" : 'hidden' } inline-flex justify-center rounded-md mx-1 border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-rose-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2`}
                       onClick={() => {
                         dispatch(showConfirm({
                           id: orderDetails?.id,
@@ -140,6 +159,29 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
                     >
                       Cancel Order
                     </button>
+
+                    <Link href={"/Checkout"}
+                      type="button"
+                      className={`${orderDetails?.completed ? "" : 'hidden' } inline-flex justify-center rounded-md border mx-1 border-transparent bg-orange-100 px-4 py-2 text-sm font-medium text-orange-900 hover:bg-orange-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2`}
+                      onClick={() => {
+                        dispatch(setCheckOrder({
+                          ...orderDetails,
+                          completed: false,
+                          pending: true,
+                          id: generateUniqueId({
+                            length: 9,
+                            useLetters: true,
+                            useNumbers: true,
+                          }),
+                          time: createDate(),
+                        }))
+                        setModal(false)
+                      }}
+                    >
+                      Re-Order 
+                    </Link>
+
+
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

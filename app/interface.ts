@@ -110,7 +110,7 @@ export interface OrderType {
     pending: boolean,
     completed: boolean,
     canceled: boolean,
-    address?: string
+    address: string
 }
 
 export interface OrderModalType {

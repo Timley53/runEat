@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { cancelOrder } from '../GlobalRedux/slice/userSlice'
+import { cancelOrder, completeOrder } from '../GlobalRedux/slice/userSlice'
 import { Rootstate } from '../GlobalRedux/store'
 import { showConfirm } from '../GlobalRedux/slice/uiSlice'
 cancelOrder
@@ -19,6 +19,9 @@ function AYS({ setModal} : Props ) {
 
     if(type === 'cancel order'){
       dispatch(cancelOrder(id))
+    } 
+    if("complete order"){
+      dispatch(completeOrder(id))
     }
   }
 
@@ -39,12 +42,12 @@ function AYS({ setModal} : Props ) {
 } }>No</button>
             
             <button className='p-2 px-4 rounded-md bg-green-700' onClick={()=> {
+              handleConfirm()
                 dispatch(showConfirm({
                   id: '',
                   type: '',
                   modal: false
                  }))
-              handleConfirm()
               
               }}>Yes</button>
         </div>

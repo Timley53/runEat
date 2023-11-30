@@ -281,6 +281,20 @@ const useSlice = createSlice({
 
         },
 
+        completeOrder: (state, action) => {
+                state.Orders = state.Orders.map((order: OrderType) => {
+                    if(order.id === action.payload){
+                        return {
+                            ...order,
+                            pending: false,
+                            completed: true
+                        }
+                    }else{
+                        return order
+                    }
+                })
+        },
+
         getState: (state) => {
             const savedState: string | null | any = localStorage.getItem('state')
             // console.log(savedState)
@@ -346,6 +360,6 @@ const useSlice = createSlice({
     }
 })
 
-export const {addCart, removeCart,increaseCartQuant, decreaseCartQuant, deleteCart, addFavorite, removeFav, changeSize, addOrder, clearCart, setAuthorize, setCheckOrder, increaseCheckOrderQuantity, decreaseCheckOrderQuantity,changeOrderSize,deleteSingleOrder, clearOrder, getState, cancelOrder } = useSlice.actions
+export const {addCart, removeCart,increaseCartQuant, decreaseCartQuant, deleteCart, addFavorite, removeFav, changeSize, addOrder, clearCart, setAuthorize, setCheckOrder, increaseCheckOrderQuantity, decreaseCheckOrderQuantity,changeOrderSize,deleteSingleOrder, clearOrder, getState, cancelOrder, completeOrder } = useSlice.actions
 
 export default useSlice.reducer

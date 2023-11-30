@@ -73,6 +73,7 @@ function Carts() {
         canceled: false,
         orderedBy: '',
         orders: [...cart],
+        address: ''
       }
       dispatch(addOrder(newOrder));
     //   setCheckoutDetail(newOrder)
@@ -112,7 +113,7 @@ function Carts() {
 <Link href={"/Checkout"} className={`${cart.length < 1 ? "hidden" : ''} bg-orange-500 text-white hover:bg-orange-400 mx-3 self-center  my-4 p-2 w-[9rem] text-center  rounded-sm`} onClick={()=>checkOutOrder()}>Checkout</Link>
 
 
-<button className="p-2 px-2 mx-1 bg-rose-500 self-center rounded-sm   hover:bg-rose-400 text-white md:w-[7.5rem] flex items-center cursor-pointer" onClick={()=> dispatch(clearCart())}> <span className='sm:hidden md:flex text-sm mx-2 '>Clear cart</span>
+<button className={` ${cart.length < 1 ? "hidden" : ''} p-2 px-2 mx-1 bg-rose-500 self-center rounded-sm   hover:bg-rose-400 text-white md:w-[7.5rem] flex items-center cursor-pointer`} onClick={()=> dispatch(clearCart())}> <span className='sm:hidden md:flex text-sm mx-2 '>Clear cart</span>
   <AiOutlineClear/>
 </button>
 

@@ -1,7 +1,7 @@
 import { addCart, addFavorite } from '@/app/GlobalRedux/slice/userSlice'
 import { Rootstate } from '@/app/GlobalRedux/store'
 import { InitialStateType, pizzaType, pricedDataType } from '@/app/interface'
-import React from 'react'
+import React, { Suspense } from 'react'
 import  { BsFillCartPlusFill } from "react-icons/bs"
 import  { GrFavorite } from "react-icons/gr"
 import {useSelector, useDispatch} from 'react-redux'
@@ -9,6 +9,9 @@ import { CartType } from '@/app/interface'
 import Link from 'next/link'
 import { MdFavorite } from 'react-icons/md'
 import { showCartNotification } from '@/app/GlobalRedux/slice/uiSlice'
+import Image from 'next/image'
+import {FaHamburger} from "react-icons/fa"
+
 
 
 
@@ -52,7 +55,10 @@ function ProductComp({ id, image_url, title,price, publisher, favorite
 }}>
               {favorite ? <MdFavorite/> : <GrFavorite/> }
             </span>
-            <img src={image_url} alt={title} className='object-cover w-full rounded-md h-[65%]  ' />
+
+            <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><FaHamburger /></div>}>
+            <img src={image_url} alt={title}  className='object-cover w-full rounded-md h-[65%]  ' loading='lazy' placeholder='' />
+            </Suspense>
 
             <Link href={`/Details/${id}`} >
             <div className="details flex text-sm justify-between p-1 flex-col">

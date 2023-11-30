@@ -4,6 +4,9 @@ import { CartType } from '../interface'
 import { useDispatch } from 'react-redux'
 import { changeOrderSize, decreaseCartQuant, decreaseCheckOrderQuantity, deleteSingleOrder, increaseCheckOrderQuantity } from '../GlobalRedux/slice/userSlice'
 import { MdOutlineCancel } from 'react-icons/md'
+import Image from 'next/image'
+
+
 
 function CheckArticle({id, quantity, img,price, title, size}: CartType) {
     const dispatch = useDispatch()
@@ -13,7 +16,7 @@ function CheckArticle({id, quantity, img,price, title, size}: CartType) {
 
 
         <div className="p-2 m-1 self-center md:w-[90px] md:h-[90px]">
-            <img  src={img}/>
+            <img src={img} alt={title}   />
         </div>
         
         <div className="flex flex-col text-sm p-2 w-full">
