@@ -50,8 +50,8 @@ function PizzaList() {
 
   if(isLoading) return (   <div className='w-full flex flex-wrap sm:justify-start md:justify-start sm:justify-center  md:items-start  h-[full] my-2 '>
   {loadingArr.map((pizz) => {
-    return (<LoadingComp/>)
-})}
+    return (<LoadingComp key={pizz}/>)
+  })}
 </div>)
 
   if(isError) return <div className="flex w-full h-full justify-center item-center">{error.message}</div>
