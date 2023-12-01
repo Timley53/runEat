@@ -2,9 +2,10 @@
 
 import { CartType, InitialStateType, OrderType, favoriteType,  } from "@/app/interface"
 import { createAsyncThunk, createSlice} from "@reduxjs/toolkit" 
-import { signInWithPopup } from "firebase/auth"
+import { UserCredential, signInWithPopup, signInWithRedirect } from "firebase/auth"
 import { onAuthStateChanged } from "firebase/auth/cordova"
 import { auth, provider } from "../../resource/firebase"
+import firebase from "firebase/auth"
 
 
 const initialState: InitialStateType = {
@@ -23,10 +24,13 @@ const initialState: InitialStateType = {
 
    export  const singInG = createAsyncThunk('user/singInG', async ()=>{
 try{
-    const result = await signInWithPopup(auth, provider)
-    console.log(result)
+   
 
-    return result.user.displayName
+    const result: UserCredential = await signInWithRedirect(auth, provider)
+
+    // console.log(result.)
+
+     return result.user.displayName
 
 }catch(err){
     throw new Error("Error signing in")
