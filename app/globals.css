@@ -6,6 +6,66 @@
   bottom: 0;
 }
 
+
+/* loadingomp */
+
+.loadingBg {
+  background-color:#555;
+  animation: name duration timing-function delay iteration-count direction fill-mode;
+  animation-name: loading;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-fill-mode: both;
+}
+
+@keyframes loading {
+  25%{
+    background: rgb(136,134,132);
+background: linear-gradient(131deg, rgba(136,134,132,0.24423963133640558) 0%, rgba(231,225,223,0.4585253456221198) 15%, rgba(170,167,164,0.315668202764977) 100%);
+  }
+  50%{
+    background: rgb(136,134,132);
+background: linear-gradient(131deg, rgba(136,134,132,0.24423963133640558) 0%, rgba(231,225,223,0.4585253456221198) 32%, rgba(170,167,164,0.315668202764977) 100%);
+  }
+  75%{
+    background: rgb(136,134,132);
+background: linear-gradient(131deg, rgba(136,134,132,0.24423963133640558) 0%, rgba(231,225,223,0.4585253456221198) 58%, rgba(170,167,164,0.315668202764977) 100%);
+  }
+  100%{
+    background: rgb(136,134,132);
+background: linear-gradient(131deg, rgba(136,134,132,0.24423963133640558) 0%, rgba(231,225,223,0.4585253456221198) 89%, rgba(180,175,174,1) 100%);
+  }
+}
+
+.loading-p{
+  width: 75%;
+  height: 20px;
+
+}
+
+.loading-small{
+ width: 50%;
+  height: 15px;
+  
+}
+.loading-amount{
+  width: 30px;
+  height: 20px;
+  margin: 5px;
+}
+
+.loading-cart{
+  width: 30px;
+  height: 20px;
+  margin: 5px;
+}
+
+
+
+
 /* For Chrome, Safari, and Opera */
 .cart-scroll::-webkit-scrollbar {
   width: 10px; /* Set the width of the scrollbar */

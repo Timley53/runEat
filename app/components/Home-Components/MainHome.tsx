@@ -52,13 +52,14 @@ function MainHome({showCart, setShowCart}: Cartprops) {
     
 
   return (
-    <div className={`md:w-[70%] ${showCart ? 'sm:hidden md:flex' : 'md:flex sm:flex'} sm:w-[100%]  flex-col h-full md:p-2 sm:p-1 `}>
+    <div className={`md:w-[70%] ${showCart ? 'sm:hidden md:flex' : 'md:flex sm:flex'} sm:w-[100%]  flex-col h-full md:p-2 sm:p-1 items-center `}>
 
 
         <Intro/>
 
-<form className="search flex items-center">
+<form className="search flex items-center sm:w-[97%] md:w-[95%] justify-center ">
 <SearchInput isSearch={isSearch} setIsSearch={setIsSearch} search={search} setSearch={setSearch}/>
+
 <SearchCloseBtn isSearch={isSearch} setIsSearch={setIsSearch}/>
    
 

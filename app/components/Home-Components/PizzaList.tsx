@@ -1,12 +1,13 @@
 import React , {useState}from 'react'
 import ProductComp from './ProductCOmp'
 import { useQuery } from '@tanstack/react-query'
-import { favoriteType, pizzaRecipeType, pizzaType, pricedDataType } from '@/app/interface';
+import { favoriteType, loadingArr, pizzaRecipeType, pizzaType, pricedDataType } from '@/app/interface';
 import Pagination from '../Pagination';
 import { useSelector } from 'react-redux';
 import { Rootstate } from '@/app/GlobalRedux/store';
 // import BarWave from "react-cssfx-loading/";
 import {Hypnosis} from 'react-cssfx-loading'
+import LoadingComp from './LoadingComp';
 
 function PizzaList() {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -47,17 +48,17 @@ function PizzaList() {
   const start = (currentPage - 1) * dataPerPage
   const end = currentPage * dataPerPage
 
-  if(isLoading) return (<div className='flex w-[300px] m-auto h-[300px] justify-center item-center  my-10'>
-    <Hypnosis color="#FF0000" width="100px" height="50px" duration="3s" className="my-3"/>
-
-    <h2 className=" my-4">Getting your delicious Pizzas..</h2>
-     </div>)
+  if(isLoading) return (   <div className='w-full flex flex-wrap sm:justify-start md:justify-start sm:justify-center  md:items-start  h-[full] my-2 '>
+  {loadingArr.map((pizz) => {
+    return (<LoadingComp/>)
+})}
+</div>)
 
   if(isError) return <div className="flex w-full h-full justify-center item-center">{error.message}</div>
 
   return (
-    <div className='w-full h-full flex flex-col'>
-    <div className='w-full flex flex-wrap sm:justify-start md:justify-start md:items-start  h-[full] my-2 '>
+    <div className='w-full h-full flex flex-col '>
+    <div className='w-full flex flex-wrap sm:justify-start md:justify-start sm:justify-center  md:items-start  h-[full] my-2 '>
       {data?.slice?.(start, end).map((pizz: pricedDataType) => {
 
         const favorite =  favorites.some((fav:favoriteType) => fav?.id === pizz.id)

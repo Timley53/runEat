@@ -1,10 +1,11 @@
 import React , {useState}from 'react'
 import ProductComp from './ProductCOmp'
 import { useQuery } from '@tanstack/react-query'
-import { favoriteType, pizzaRecipeType, pizzaType, pricedDataType } from '@/app/interface';
+import { favoriteType, loadingArr, pizzaRecipeType, pizzaType, pricedDataType } from '@/app/interface';
 import Pagination from '../Pagination';
 import { useSelector } from 'react-redux';
 import { Rootstate } from '@/app/GlobalRedux/store';
+import LoadingComp from './LoadingComp';
 
 
 function DesertList() {
@@ -33,8 +34,6 @@ function DesertList() {
           quantity: 1,
         }
       })
-      console.log(pricedData)
-
       return pricedData as pricedDataType[]
     }
   })
@@ -46,13 +45,17 @@ function DesertList() {
   const start = (currentPage - 1) * dataPerPage
   const end = currentPage * dataPerPage
 
-  if(isLoading) return (<div className='flex w-full h-full justify-center item-center'>Getting your delicious pizza </div>)
+  if(isLoading) return (   <div className='w-full flex flex-wrap sm:justify-start md:justify-start sm:justify-center  md:items-start  h-[full] my-2 '>
+  {loadingArr.map((pizz) => {
+    return (<LoadingComp/>)
+})}
+</div>)
 
   if(isError) return <div className="flex w-full h-full justify-center item-center">{error.message}</div>
 
   return (
     <div className='w-full h-full flex flex-col'>
-    <div className='w-full flex flex-wrap sm:justify-start md:justify-start md:items-start  h-[full] my-2 '>
+    <div className='w-full flex flex-wrap sm:justify-center  md:justify-start md:items-start  h-[full] my-2 '>
       {data?.slice?.(start, end).map((pizz: pricedDataType) => {
 
          const favorite =  favorites.some((fav:favoriteType) => fav?.id === pizz.id)

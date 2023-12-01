@@ -120,3 +120,8 @@ export interface OrderModalType {
     setModal:React.Dispatch<React.SetStateAction<boolean>> 
   
   }
+
+
+
+
+  export const loadingArr  = [1,2,3,4,5,6,7,8]

@@ -48,7 +48,7 @@ function ProductComp({ id, image_url, title,price, publisher, favorite
 
     
   return (
-        <article className="flex flex-col sm:h-[250px] md:h-[250px] rounded-md md:w-[9.5rem] md:m-[10px] sm:m-[8px] relative sm:w-[44%] outline outline-2   outline-orange-200 ">
+        <article className="flex flex-col sm:h-[250px] md:h-[250px] rounded-md md:w-[9.5rem] md:m-[10px] sm:m-[10px] relative sm:w-[44%] outline outline-2   outline-orange-200 ">
             <span className='bg-orange-100 w-[30px] h-[30px] flex items-center justify-center rounded-full absolute right-2 top-2 cursor-pointer  text-orange-600 transition-all'
             onClick={()=> {
               addFav()
