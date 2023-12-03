@@ -264,13 +264,13 @@ const useSlice = createSlice({
         },
         setAuthorize: (state, action) => {
 
-            if(typeof action.payload === "string"){
-      const cookie = JSON.parse( `{"authorize": true}`)
+            if(action.payload && typeof action.payload === "string"){
+      const cookie = JSON.parse(action.payload)
       state.authorized = cookie.authorize
 
             }
 
-            if(action.payload){
+            if(action.payload && typeof action.payload === "boolean"){
                 state.authorized = action.payload
 
             }

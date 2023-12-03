@@ -15,8 +15,9 @@ import generateUniqueId from 'generate-unique-id'
 import { createDate } from '../components/Home-Components/Cart'
 import { AiOutlineClear } from 'react-icons/ai'
 import Link from 'next/link'
-import { log } from 'console'
 import { Unsubscribe } from '@reduxjs/toolkit'
+
+
 
 function Carts() {
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -83,10 +84,11 @@ function Carts() {
     //   setIsOpen(true)
     }
 
-
+/*
 
     if(!authorize){
       let x = document.cookie
+      
       let splitCookieUnparsed = x.split(';')[1]
       dispatch(setAuthorize(splitCookieUnparsed))
       // console.log(split)
@@ -94,7 +96,7 @@ function Carts() {
       // console.log(cookie)
 
     }
-
+*/
 
 
     useEffect(() => {
@@ -105,20 +107,36 @@ function Carts() {
       // dispatch(setAuthorize(splitCookieUnparsed))
         // dispatch<any>(listenOnAuth())
 
-        if(!authorize && splitCookieUnparsed){
+        if(!authorize && !splitCookieUnparsed){
            unsubscribe = onAuthStateChanged(auth, (user) =>{
             if(user){
              dispatch( setAuthorize(true))
         // document.cookie = `{"authorize": true}`
 
   
-        return () => unsubscribe()
-            }else{
+      } else{
+        dispatch( setAuthorize(false))
+        
+      }
+    })
+    return () => unsubscribe()
+
+        }else if(!authorize && splitCookieUnparsed){
+          unsubscribe = onAuthStateChanged(auth, (user) =>{
+            if(user){
+            //  dispatch( setAuthorize(true))
+        // document.cookie = `{"authorize": true}`
+              dispatch(setAuthorize(splitCookieUnparsed))
+
+
+  
+            } else{
               dispatch( setAuthorize(false))
   
             }
           })
-
+          
+          return () => unsubscribe()
         }
 
 
