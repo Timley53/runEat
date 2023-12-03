@@ -15,6 +15,9 @@ import generateUniqueId from 'generate-unique-id'
 import { createDate } from '../components/Home-Components/Cart'
 import { AiOutlineClear } from 'react-icons/ai'
 import Link from 'next/link'
+import { log } from 'console'
+import Document from 'next/document'
+import { Unsubscribe } from '@reduxjs/toolkit'
 
 function Carts() {
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -81,19 +84,45 @@ function Carts() {
     //   setIsOpen(true)
     }
 
+
+
+    if(!authorize){
+      let x = document.cookie
+      let splitCookieUnparsed = x.split(';')[1]
+      dispatch(setAuthorize(splitCookieUnparsed))
+      // console.log(split)
+      // const cookie = JSON.parse( `{"authorize": true}`)
+      // console.log(cookie)
+
+    }
+
+
+
     useEffect(() => {
-      
+      let unsubscribe:Unsubscribe | any
+      let x = document.cookie
+
+      let splitCookieUnparsed = x.split(';')[1]
+      // dispatch(setAuthorize(splitCookieUnparsed))
         // dispatch<any>(listenOnAuth())
-        const unsubscribe = onAuthStateChanged(auth, (user) =>{
-          if(user){
-           dispatch( setAuthorize(true))
-          }else{
-            dispatch( setAuthorize(false))
 
-          }
-        })
+        if(!authorize && splitCookieUnparsed){
+           unsubscribe = onAuthStateChanged(auth, (user) =>{
+            if(user){
+             dispatch( setAuthorize(true))
+        // document.cookie = `{"authorize": true}`
 
-       return () => unsubscribe()
+  
+        return () => unsubscribe()
+            }else{
+              dispatch( setAuthorize(false))
+  
+            }
+          })
+
+        }
+
+
     }, [])
     
   
@@ -113,7 +142,11 @@ function Carts() {
 <Link href={"/Checkout"} className={`${cart.length < 1 ? "hidden" : ''} bg-orange-500 text-white hover:bg-orange-400 mx-3 self-center  my-4 p-2 w-[9rem] text-center  rounded-sm`} onClick={()=>checkOutOrder()}>Checkout</Link>
 
 
-<button className={` ${cart.length < 1 ? "hidden" : ''} p-2 px-2 mx-1 bg-rose-500 self-center rounded-sm   hover:bg-rose-400 text-white md:w-[7.5rem] flex items-center cursor-pointer`} onClick={()=> dispatch(clearCart())}> <span className='sm:hidden md:flex text-sm mx-2 '>Clear cart</span>
+<button className={` ${cart.length < 1 ? "hidden" : ''} p-2 px-2 mx-1 bg-rose-500 self-center rounded-sm   hover:bg-rose-400 text-white md:w-[7.5rem] flex items-center cursor-pointer`} onClick={()=>{
+  // document.cookie = `{"authorize": true}`
+
+
+  dispatch(clearCart())}}> <span className='sm:hidden md:flex text-sm mx-2 '>Clear cart</span>
   <AiOutlineClear/>
 </button>
 
@@ -142,7 +175,7 @@ function Carts() {
             <h2 className='w-full text-center  p-3'>Cart</h2>
     
       <div className='flex h-full w-full sm:flex-col md:flex-row justify-center  items-center '>
-            You are not signed in <GoogleButton className='md:mx-4 sm:my-5' onClick={()=> dispatch<any>(singInG())}>Sign in with Google</GoogleButton>
+            You are not signed in <button className='md:mx-4 sm:my-5' onClick={()=> dispatch<any>(singInG())}>Sign in with Google</button>
         </div>
     
           </div>

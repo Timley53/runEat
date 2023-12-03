@@ -27,6 +27,9 @@ try{
    
 
     const result: UserCredential = await signInWithRedirect(auth, provider)
+    if(result.user){
+        document.cookie = `{"authorize": true}`
+    }
 
     // console.log(result.)
 
@@ -260,7 +263,21 @@ const useSlice = createSlice({
 
         },
         setAuthorize: (state, action) => {
-            state.authorized = action.payload
+
+            if(typeof action.payload === "string"){
+      const cookie = JSON.parse( `{"authorize": true}`)
+      state.authorized = cookie.authorize
+
+            }
+
+            if(action.payload){
+                state.authorized = action.payload
+
+            }
+
+            if(!action.payload){
+                return
+            }
 
             localStorage.setItem('state', JSON.stringify({...state}))
 
