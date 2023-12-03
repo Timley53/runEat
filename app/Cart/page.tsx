@@ -16,7 +16,6 @@ import { createDate } from '../components/Home-Components/Cart'
 import { AiOutlineClear } from 'react-icons/ai'
 import Link from 'next/link'
 import { log } from 'console'
-import Document from 'next/document'
 import { Unsubscribe } from '@reduxjs/toolkit'
 
 function Carts() {
