@@ -5,8 +5,10 @@ import { Rootstate } from "../GlobalRedux/store"
 import { favoriteType } from "../interface"
 import FavoriteComp from "./FavoriteComp"
 import Pagination from "../components/Pagination"
-import { getState, singInG } from "../GlobalRedux/slice/userSlice"
+import { getState, setAuthorize, setStateCookies, singInG } from "../GlobalRedux/slice/userSlice"
 import GoogleButton from "react-google-button"
+import { Unsubscribe, onAuthStateChanged } from "firebase/auth"
+import { auth } from "../resource/firebase"
 
 
 
@@ -26,18 +28,40 @@ function Favorites(){
   const end = currentPage * dataPerPage
 
 
+//   useEffect(() => {
+// setCurrentPage(1)  }, [userGlobal])
+
   useEffect(() => {
     dispatch(getState())
   }, [])
+
+
+  
+  useEffect(() => {
+    let unsubscribe:Unsubscribe | any
+    let x = document.cookie
+
+    let splitCookieUnparsed = x.split(';')[1]
+   
+     
+
+
+  }, [])
   
 
-    if(authorized){
+  
+
 
     
 
     return(
         <div className="w-[100%] h-[100%]   flex flex-col p-2 items-center sm:mb-10">
         <span className="mx-auto text-xl">Favorites</span>
+
+        <button className="mx-auto text-xl" onClick={()=> {
+          const cookie = document.cookie
+          console.log(cookie)
+        }}>Favorites</button>
         <div className="md:w-[90%] sm:w-[100%] flex flex-wrap sm:justify-start self-center md:justify-center items-center  h-[full] my-2 ">
         {
             favorite.length > 0 && favorite.slice(start, end).map((fav : favoriteType) => {
@@ -52,18 +76,7 @@ function Favorites(){
 
         </div>
     )
-    }else{
-        return(
-            <div className='w-full flex h-screen flex-col '>
-              <h2 className='w-full text-center  p-3'>Favorites</h2>
-      
-              <div className='flex h-full w-full sm:flex-col md:flex-row justify-center  items-center'>
-            You are not signed in <GoogleButton className='md:mx-4 sm:my-5' onClick={()=> dispatch<any>(singInG())}>Sign in with Google</GoogleButton>
-        </div>
-      
-            </div>
-          ) 
-    }
+  
 
 }
 

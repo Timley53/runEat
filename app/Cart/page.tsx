@@ -104,47 +104,13 @@ function Carts() {
       let x = document.cookie
 
       let splitCookieUnparsed = x.split(';')[1]
-      // dispatch(setAuthorize(splitCookieUnparsed))
-        // dispatch<any>(listenOnAuth())
-
-        if(!authorize && !splitCookieUnparsed){
-           unsubscribe = onAuthStateChanged(auth, (user) =>{
-            if(user){
-             dispatch( setAuthorize(true))
-        // document.cookie = `{"authorize": true}`
-
-  
-      } else{
-        dispatch( setAuthorize(false))
-        
-      }
-    })
-    return () => unsubscribe()
-
-        }else if(!authorize && splitCookieUnparsed){
-          unsubscribe = onAuthStateChanged(auth, (user) =>{
-            if(user){
-            //  dispatch( setAuthorize(true))
-        // document.cookie = `{"authorize": true}`
-              dispatch(setAuthorize(splitCookieUnparsed))
-
-
-  
-            } else{
-              dispatch( setAuthorize(false))
-  
-            }
-          })
-          
-          return () => unsubscribe()
-        }
-
+     
+      
 
     }, [])
     
   
 
-    if(authorize){
         return (
             <div className="w-[100%] h-[100%]   flex flex-col p-2 items-center sm:mb-10">
             <span className="mx-auto text-xl">Carts</span>
@@ -160,9 +126,6 @@ function Carts() {
 
 
 <button className={` ${cart.length < 1 ? "hidden" : ''} p-2 px-2 mx-1 bg-rose-500 self-center rounded-sm   hover:bg-rose-400 text-white md:w-[7.5rem] flex items-center cursor-pointer`} onClick={()=>{
-  // document.cookie = `{"authorize": true}`
-
-
   dispatch(clearCart())}}> <span className='sm:hidden md:flex text-sm mx-2 '>Clear cart</span>
   <AiOutlineClear/>
 </button>
@@ -186,19 +149,7 @@ function Carts() {
     
             </div>
           )
-    }else{
-        return (
-            <div className='w-full flex h-screen flex-col '>
-            <h2 className='w-full text-center  p-3'>Cart</h2>
-    
-      <div className='flex h-full w-full sm:flex-col md:flex-row justify-center  items-center '>
-            You are not signed in <button className='md:mx-4 sm:my-5' onClick={()=> dispatch<any>(singInG())}>Sign in with Google</button>
-        </div>
-    
-          </div>
-        )
-
-    }
+   
 
 }
 

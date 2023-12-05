@@ -316,17 +316,30 @@ const useSlice = createSlice({
                 })
         },
 
+        setStateCookies:(state) => {
+            document.cookie = `${state}`
+        },
+
         getState: (state) => {
             const savedState: string | null | any = localStorage.getItem('state')
             // console.log(savedState)
             const parsedState = JSON.parse(savedState)
-            // console.log(parsedState)
+            console.log(parsedState)
 
-            if( parsedState == null) return 
+            if( parsedState === null) return 
 
             if(parsedState && typeof parsedState == "object"){
-                state = parsedState
-                // console.log(state)
+                state.Orders = parsedState.Orders
+                state.authorized = parsedState.authorized
+                state.cart = parsedState.cart
+                state.checkoutList = parsedState.checkoutList
+                state.error = parsedState.error
+                state.errorMessage = parsedState.errorMessage
+                state.favorite = parsedState.favorite
+                state.loading = parsedState.loading
+                state.name = parsedState.name
+                state.productQuantity = parsedState.productQuantity
+                console.log(state)
             }
         }
         
@@ -381,6 +394,6 @@ const useSlice = createSlice({
     }
 })
 
-export const {addCart, removeCart,increaseCartQuant, decreaseCartQuant, deleteCart, addFavorite, removeFav, changeSize, addOrder, clearCart, setAuthorize, setCheckOrder, increaseCheckOrderQuantity, decreaseCheckOrderQuantity,changeOrderSize,deleteSingleOrder, clearOrder, getState, cancelOrder, completeOrder } = useSlice.actions
+export const {addCart, removeCart,increaseCartQuant, decreaseCartQuant, deleteCart, addFavorite, removeFav, changeSize, addOrder, clearCart, setAuthorize, setCheckOrder, increaseCheckOrderQuantity, decreaseCheckOrderQuantity,changeOrderSize,deleteSingleOrder, clearOrder, getState, cancelOrder, completeOrder, setStateCookies } = useSlice.actions
 
 export default useSlice.reducer

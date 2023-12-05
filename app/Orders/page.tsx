@@ -19,6 +19,7 @@ import GoogleButton from 'react-google-button'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../resource/firebase'
 import AYS from '../components/AYS'
+import { Unsubscribe } from '@reduxjs/toolkit'
 
 
 interface OrderContextObjType {
@@ -41,43 +42,19 @@ function Orders() {
 
   const dispatch = useDispatch()
 
+
   useEffect(() => {
-      
-    // dispatch<any>(listenOnAuth())
-    const unsubscribe = onAuthStateChanged(auth, (user) =>{
-      if(user){
-       dispatch( setAuthorize(true))
-      }else{
-        dispatch( setAuthorize(false))
+    let unsubscribe:Unsubscribe | any
+    let x = document.cookie
 
-      }
-    })
-
-   return () => unsubscribe()
-}, [])
+    let splitCookieUnparsed = x.split(';')[1]
+   
+   
+  }, [])
+  
 
 
-    useEffect(() => {
-      dispatch(getState())
-    }, [])
-    
-
-
-
-  if(!authorized){
-    return(
-      <div className='w-full flex h-screen flex-col '>
-        <h2 className='w-full text-center  p-3'>Orders</h2>
-
-<div className="flex h-full w-full sm:flex-col md:flex-row justify-center  items-center ">
-  <span>You are not logged in</span>   
-  <GoogleButton className='md:mx-4 sm:my-5' onClick={()=> dispatch<any>(singInG())}>Sign in with Google</GoogleButton>
-</div>
-
-      </div>
-    ) 
-  }else{
-
+ 
 
 
   return (
@@ -114,7 +91,7 @@ function Orders() {
     </OrderContext.Provider>
 
   )
-}
+
 
 }
 
