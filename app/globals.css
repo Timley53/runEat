@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+input{
+  zoom: 0;
+}
+
+input:focus > *{
+  zoom: 0%;
+}
+input:focus > html{
+  zoom: 0%;
+}
+
 .bottom{
   bottom: 0;
 }
