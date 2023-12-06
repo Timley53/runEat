@@ -56,9 +56,9 @@ dispatch(clearOrder())
 
     <h2 className='text-white my-2 text-xl'>Order Details</h2>
 
-      <div className="md:w-[500px] sm:w-[90%] sm:order-2 md:order-1 flex sm:flex-col md:flex-row h-[100%] bg-white bg-opacity-50 items-center justify-between rounded-md border border-red-500">
+      <div className="md:w-[500px] sm:w-[90%] sm:order-2 md:order-1 flex sm:flex-col md:flex-row h-[100%] bg-white bg-opacity-50 sm:items-center md:items-start justify-between rounded-md border border-red-500">
 
-    <form onSubmit={formSubmitAddress} className="md:w-[40%] sm:w-[100%] md:h-[40%] flex items-center flex-col  rounded-md border-2 border-white md:p-1 bg-white self-center md:m-1 bg-opacity-70 sm:mb-6 md:mb-1">
+    <form onSubmit={formSubmitAddress} className="md:w-[40%] sm:w-[100%] md:h-[40%] flex items-center flex-col  rounded-md border-2 border-white md:p-1 bg-white sm:self-center md:self-start  md:m-1 bg-opacity-70 sm:mb-6 md:mb-1">
     <h2>Order Total</h2>
 
 

@@ -37,8 +37,7 @@ function Intro() {
 
   || !authorized && <div className={`w-full p-3 flex items-center`}>
           <span><i>Welcome</i></span>
-          <button  onClick={()=> dispatch<void | any>(singInG())} className='text-base flex items-center '> Sign in 
-          </button>
+        
 
       </div> 
     )

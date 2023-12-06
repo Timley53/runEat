@@ -58,10 +58,7 @@ function Favorites(){
         <div className="w-[100%] h-[100%]   flex flex-col p-2 items-center sm:mb-10">
         <span className="mx-auto text-xl">Favorites</span>
 
-        <button className="mx-auto text-xl" onClick={()=> {
-          const cookie = document.cookie
-          console.log(cookie)
-        }}>Favorites</button>
+       
         <div className="md:w-[90%] sm:w-[100%] flex flex-wrap sm:justify-start self-center md:justify-center items-center  h-[full] my-2 ">
         {
             favorite.length > 0 && favorite.slice(start, end).map((fav : favoriteType) => {
