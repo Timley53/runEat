@@ -8,15 +8,27 @@ import { addOrder, clearCart, clearOrder, getState } from '../GlobalRedux/slice/
 import Pagination from '../components/Pagination'
 import AddressInput from './AddressInput'
 import Link from 'next/link'
+import { RxCross2 } from 'react-icons/rx'
+import { BsArrowRight } from 'react-icons/bs'
+import FormComponent from './FormComponent'
 
 
 function Checkout() {
   const [currentPage, setCurrentPage] = useState<number>(1)
+  const [mobileCheck, setMobileCheck] = useState<boolean>(false)
+
+  // form data states
+  const [firstName, setFirstName] = useState<string>('')
+  const [lastName, setLastName] = useState<string>('')
   const [address, setAddress] = useState<string>('')
+  const [city, setCity] = useState<string>('')
+  
+  // =============>>>
+  
     const cartOrder = useSelector((state: Rootstate) => state.user.checkoutList)
   const userGlobal = useSelector((state: Rootstate) => state.user )
 
-  const dataPerPage = 3;
+  const dataPerPage = 2;
   const pages = Math.ceil(cartOrder ? cartOrder.orders.length/ dataPerPage : 0 )
 
   const start = (currentPage - 1) * dataPerPage
@@ -50,37 +62,80 @@ dispatch(clearOrder())
     } ,0): 0;
 
   return (
-    <div className="w-full md:h-screen sm:h-full check-bg sm:pb-8 md:pb-7 min-h">
-
-    <div className="w-full h-full bg-black bg-opacity-50 backdrop-blur-[2px] flex flex-col justify-center items-center  min-h">
-
-    <h2 className='text-white my-2 text-xl'>Order Details</h2>
-
-      <div className="md:w-[500px] sm:w-[90%] sm:order-2 md:order-1 flex sm:flex-col md:flex-row h-[100%] bg-white bg-opacity-50 sm:items-center md:items-start justify-between rounded-md border border-red-500">
-
-    <form onSubmit={formSubmitAddress} className="md:w-[40%] sm:w-[100%] md:h-[40%] flex items-center flex-col  rounded-md border-2 border-white md:p-1 bg-white sm:self-center md:self-start  md:m-1 bg-opacity-70 sm:mb-6 md:mb-1">
-    <h2>Order Total</h2>
+    <div className="w-full md:h-screen sm:h-screen flex  items-center bg-[#D8D9DD] p-2 justify-center">
 
 
 
-      <div className='w-[100%] text-sm'>
-      <article className='flex w-full justify-between p-1 my-1  md:text-sm sm:text-base'>
-        <span>Order</span>
-        <span>${cartOrder?.orders.reduce((acc, curr)=>{
+<div className={`md:w-[44%] md:max-w-[350px]  sm:w-[100%] md:h-[95%] ${mobileCheck ? "md:flex sm:hidden" : "md:flex sm:flex"} flex-col   mx-4 bg-[#FFFFFF] rounded-md`}>
+
+  <h2 className='md:p-2 sm:p-1 border-b-2 w-[90%] mx-auto flex justify-between items-center'>
+    Order cart
+
+<article className=' sm:fkex md:hidden flex p-1'>
+<button className='mr-6 p-2 text-xl'><RxCross2/>
+</button>
+<button className='p-2 text-xl' onClick={(e)=> setMobileCheck(true)}><BsArrowRight/></button>
+
+</article>
+    </h2>
+
+  <div className="w-full flex flex-col items-center h-[80%]  ">
+
+{
+cartOrder && cartOrder?.orders.length < 1 && <div className="w-full">
+  No Order
+  </div> || cartOrder && cartOrder.orders.slice(start, end).map((order) => (
+    <CheckArticle key={order.id} {...order}/>
+  ))
+}
+
+<Pagination currentPage={currentPage} pages={pages} setCurrentPage={setCurrentPage}/>
+
+</div>
+
+<div className="w-full flex flex-col p-2">
+
+  <div className="flex flex-col w-full border-t-2 border-b-2 p-2  text-sm">
+
+  <article className='flex w-full justify-between my-1'>
+    <span>Subtotal:</span>
+    <span>${cartOrder?.orders.reduce((acc, curr)=>{
           return acc + curr.price
         } ,0)}</span>
-      </article>
-      <article className='flex w-full justify-between p-1 my-1 border-b-2'>
-        <span>Shipping</span>
-        <span>${shippingFee.toFixed(1) }</span>
-      </article>
-      <article className='flex w-full justify-between p-1 my-1 md:text-sm sm:text-base '>
-        <span>Total</span>
-        <span>${total}</span>
-      </article>
-      </div>
+  </article>
 
-    <AddressInput address={address} setAddress={setAddress}/>
+  <article className='flex w-full justify-between my-1'>
+    <span>Delivery:</span>
+    <span>${shippingFee.toFixed(1) }</span>
+  </article>
+  </div>
+
+  <div className="flex w-full ">
+  <article className="flex w-full justify-between p-2 text-sm">
+    <span>Total</span>
+    <span>${
+       cartOrder && cartOrder?.orders.reduce((acc, curr)=>{
+          return acc + curr.price
+        } ,0) + shippingFee
+}</span>
+  </article>
+  </div>
+</div>
+
+
+</div>
+
+{/* buyers info */}
+
+    <div onSubmit={formSubmitAddress} className={`md:w-[44%] md:max-w-[350px]  sm:w-[100%] md:h-[95%] ${mobileCheck ? "md:flex sm:flex" : "md:flex sm:hidden"} flex-col p-1  mx-4 bg-[#FFFFFF] rounded-md`}>
+
+    <h2 className='p-1 py-2 w-[95%] border-b-2 mx-auto text-sm'>Delivery Info</h2>
+
+
+ 
+
+    <FormComponent/>    
+
 
       <article className='flex w-full justify-between p-1 my-1 items-center'>
         <Link href={"/"} onClick={()=> dispatch(clearOrder())} className='mt-3 p-1 py-2 px-4 rounded-md bg-rose-400 hover:bg-rose-200 text-center md:text-xs  sm:text-lg transition-all' >Cancel</Link>
@@ -89,25 +144,10 @@ dispatch(clearOrder())
         >Pay</button>
       </article>
       
-    </form>
-
-    <div className="md:w-[60%]  sm:w-[100%] md:h-[100%] flex flex-col items-center justify-center">
-
-      {
-      cartOrder && cartOrder?.orders.length < 1 && <div className="w-full">
-        No Order
-        </div> || cartOrder && cartOrder.orders.slice(start, end).map((order) => (
-          <CheckArticle key={order.id} {...order}/>
-        ))
-      }
-
-   <Pagination currentPage={currentPage} pages={pages} setCurrentPage={setCurrentPage}/>
-
     </div>
-      </div>
 
 
-    </div>
+
         
     </div>
   )

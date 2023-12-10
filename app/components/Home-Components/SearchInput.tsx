@@ -1,5 +1,7 @@
+"use client"
+
 import { Cartprops } from '@/app/interface';
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 interface Props {
     search: string;
@@ -10,28 +12,36 @@ interface Props {
 
 function SearchInput({search, setSearch, setIsSearch} : Props) {
 
+  const searchRef = useRef<HTMLInputElement>(null) 
 
+
+  
 
   useEffect(() => {
-    document.addEventListener('touchstart', function(e) {
-      if (document.activeElement?.tagName !== 'INPUT') {
-        document.body.style.overflow = 'hidden';
-      }
+
+    searchRef.current?.addEventListener('focusin', function(e) {
+
+      console.log(this.tagName)
+
+    });
+
+    searchRef.current?.addEventListener('focusout', function(e) {
+
+      console.log(this.tagName)
+
     });
     
-    document.addEventListener('touchend', function(e) {
-      document.body.style.overflow = 'visible';
-    });
-    
-
-
+   
+   return () => searchRef.current?.removeEventListener('focus', function(e) {
+   
+  }); 
 
   }, [])
   
 
 
   return (
-    <input  type='text' placeholder='Chicken' onFocus={()=> setIsSearch(true)} value={search} onChange={(e)=>setSearch(e.target.value)}  className='p-2 bg-slate-200 rounded-md text-sm w-full focus-within:outline-none'/>
+    <input ref={searchRef} type='text'  placeholder='Chicken' onFocus={()=> setIsSearch(true)} value={search} onChange={(e)=>setSearch(e.target.value)}  className='p-2 bg-slate-200 rounded-md text-sm w-full focus-within:outline-none'/>
   )
 }
 

@@ -31,24 +31,20 @@ function MainHome({showCart, setShowCart}: Cartprops) {
 
 
 
-    // useEffect(()=>{
 
-    //     setTimeout(()=> {
-    //       dispatch(hideCartNotification())
-    //     }, 3000)
-    //     console.log('tt')
+    useEffect(() => {
 
-    // },[cartNotification])
-
-
-    // function submitSearchForm(){
-     
-    //   return  { data, isLoading, isError, error}
-    
-    // }
-
-    // const { data, isLoading, isError, error} = 
-
+      document.addEventListener('touchstart', function(e) {
+        if (document.activeElement?.tagName !== 'INPUT') {
+          document.body.style.overflow = 'hidden';
+        }
+      });
+      
+      document.addEventListener('touchend', function(e) {
+        document.body.style.overflow = 'visible';
+      });
+      
+    }, [])
     
 
   return (
@@ -57,10 +53,9 @@ function MainHome({showCart, setShowCart}: Cartprops) {
 
         <Intro/>
 
-<form className="search flex items-center sm:w-[97%] md:w-[95%] justify-center ">
-<SearchInput isSearch={isSearch} setIsSearch={setIsSearch} search={search} setSearch={setSearch}/>
-
-<SearchCloseBtn isSearch={isSearch} setIsSearch={setIsSearch}/>
+    <form className="search flex items-center sm:w-[97%] md:w-[95%] justify-center ">
+        <SearchInput isSearch={isSearch} setIsSearch={setIsSearch} search={search} setSearch={setSearch}/>
+            <SearchCloseBtn isSearch={isSearch} setIsSearch={setIsSearch}/>
    
 
     <span className={` bg-orange-300 p-2 md:p6-4  sm:px-3 text-2xl mx-1 rounded-md hover:bg-orange-100 cursor-pointer md:hidden`} onClick={()=>setShowCart(true)}>
@@ -68,7 +63,7 @@ function MainHome({showCart, setShowCart}: Cartprops) {
     </span>
 </form>
 {/* <Banner/> */}
-    <Tab/>
+    <Tab setIsSearch={setIsSearch} isSearch={isSearch}/>
 
 {
 !isSearch && (pizza && <PizzaList/> || burger && <BurgersList/> || desert && <DesertList/> ) || isSearch && <SearchList search={search}/>

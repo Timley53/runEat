@@ -63,7 +63,6 @@ function ProductComp({ id, image_url, title,price, publisher, favorite
             <Link href={`/Details/${id}`} >
             <div className="details flex text-sm justify-between p-1 flex-col">
                     <p className='font-bold text-orange-800 text-[12px]'>{title?.slice(0, 15)}...</p>
-
                     <small className='text-orange-700'>{publisher}
                     
 
@@ -74,7 +73,8 @@ function ProductComp({ id, image_url, title,price, publisher, favorite
             <div className="flex justify-between w-full items-center px-1 ">
                 <span className='text-sm'>${price}</span>
 
-            <button className='m-2 self-end text-orange-500 text-2xl my-3' onClick={()=>{
+            <button className='m-2 self-end text-orange-500 text-2xl my-3' onClick={(e)=>{
+              e.stopPropagation()
               addToCart(id)
             }}>
                 <BsFillCartPlusFill/>
