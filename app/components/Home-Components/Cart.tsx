@@ -65,7 +65,10 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
         useLetters: true,
         useNumbers: true,
       }),
-      OverallPrice: total ,
+      OverallPrice: cart?.reduce((acc, curr) =>{
+        return acc + (curr.price * curr.quantity)
+      }, 0) 
+   ,
       time: createDate(),
       pending: true,
       completed: false,
@@ -77,6 +80,8 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
 
     
         dispatch(setCheckOrder(newOrder))
+        window.location.href = '/Checkout'
+
         // Router.push('/Checkout')
         // window.location('Checkout')
 
@@ -122,7 +127,8 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
 
     
     <div className="w-full flex px-2">
-<Link href={'/Checkout'} className={` ${cart.length < 1 ? "hidden" : ''} bg-orange-500 text-white hover:bg-orange-400 mx-auto text-center my-4 p-2 w-[80%] rounded-sm`} onClick={()=>checkOutOrder()}>Checkout</Link>
+<button  className={` ${cart.length < 1 ? "hidden" : ''} bg-orange-500 text-white hover:bg-orange-400 mx-auto text-center my-4 p-2 w-[80%] rounded-sm`} onClick={()=>checkOutOrder()}>Checkout</button>
+{/* href={'/Checkout'} */}
 
 <span className={` ${cart.length < 1 ? "hidden" : ''} p-2 px-3 mx-2 bg-rose-500 self-center rounded-sm  hover:bg-rose-400 text-white`} onClick={()=> dispatch(clearCart())}>
   <AiOutlineClear/>

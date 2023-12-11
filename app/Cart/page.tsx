@@ -6,7 +6,7 @@ import { Rootstate, } from '../GlobalRedux/store'
 import Pagination from '../components/Pagination'
 import { CartType, OrderType } from '../interface'
 import CartComp from '../components/CartComp/CartComp'
-import { addOrder, clearCart, getState, listenOnAuth, setAuthorize, singInG } from '../GlobalRedux/slice/userSlice'
+import { addOrder, clearCart, getState, listenOnAuth, setAuthorize, setCheckOrder, singInG } from '../GlobalRedux/slice/userSlice'
 import GoogleButton from 'react-google-button'
 import CartPageComp from './CartPageComp'
 import { onAuthStateChanged } from 'firebase/auth'
@@ -52,15 +52,12 @@ function Carts() {
   
     const checkOutOrder = () => {
   
-      onAuthStateChanged(auth, (user)=>{
-        if(user){
-          window.location.href = '/Orders'  
-        }else{
-           dispatch<void | any>(singInG())
-  
-          }
-      })
-  
+      const formatNumber = (num: number) => {
+        return new Intl.NumberFormat('en-US').format(num)
+      }
+    
+    if(cart.length < 1) return
+
   
      
       const newOrder:OrderType = {
@@ -69,7 +66,9 @@ function Carts() {
           useLetters: true,
           useNumbers: true,
         }),
-        OverallPrice: total ,
+        OverallPrice:  cart?.reduce((acc, curr) =>{
+          return acc + (curr.price * curr.quantity)
+        }, 0)  ,
         time: createDate(),
         pending: true,
         completed: false,
@@ -78,11 +77,51 @@ function Carts() {
         orders: [...cart],
         address: ''
       }
-      dispatch(addOrder(newOrder));
+      // dispatch(addOrder(newOrder));
+      dispatch(setCheckOrder(newOrder))
+        window.location.href = '/Checkout'
+
+
     //   setCheckoutDetail(newOrder)
   
     //   setIsOpen(true)
     }
+
+    
+  
+
+  // const checkOutOrder = () => {
+
+  //   // =============
+
+  //   const total = cart?.reduce((acc, curr) =>{
+  //     return acc + (curr.price * curr.quantity)
+  //   }, 0) 
+
+
+  //   const newOrder:OrderType = {
+  //     id: generateUniqueId({
+  //       length: 9,
+  //       useLetters: true,
+  //       useNumbers: true,
+  //     }),
+  //     OverallPrice: total ,
+  //     time: createDate(),
+  //     pending: true,
+  //     completed: false,
+  //     canceled: false,
+  //     orderedBy: '',
+  //     orders: [...cart],
+  //     address: ''
+  //   }
+
+    
+  //       // Router.push('/Checkout')
+  //       // window.location('Checkout')
+
+      
+  // }
+
 
 /*
 
@@ -122,7 +161,9 @@ function Carts() {
 
  <div className="w-[60%] flex px-2  items-end justify-end">
 
-<Link href={"/Checkout"} className={`${cart.length < 1 ? "hidden" : ''} bg-orange-500 text-white hover:bg-orange-400 mx-3 self-center  my-4 p-2 w-[9rem] text-center  rounded-sm`} onClick={()=>checkOutOrder()}>Checkout</Link>
+<button className={`${cart.length < 1 ? "hidden" : ''} bg-orange-500 text-white hover:bg-orange-400 mx-3 self-center  my-4 p-2 w-[9rem] text-center  rounded-sm`} onClick={()=>checkOutOrder()}>Checkout</button>
+
+{/* href={"/Checkout"} */}
 
 
 <button className={` ${cart.length < 1 ? "hidden" : ''} p-2 px-2 mx-1 bg-rose-500 self-center rounded-sm   hover:bg-rose-400 text-white md:w-[7.5rem] flex items-center cursor-pointer`} onClick={()=>{
