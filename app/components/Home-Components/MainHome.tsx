@@ -63,10 +63,10 @@ function MainHome({showCart, setShowCart}: Cartprops) {
     </span>
 </form>
 {/* <Banner/> */}
-    <Tab setIsSearch={setIsSearch} isSearch={isSearch}/>
-
+  { !isSearch &&  <Tab setIsSearch={setIsSearch} isSearch={isSearch}/>
+}
 {
-!isSearch && (pizza && <PizzaList/> || burger && <BurgersList/> || desert && <DesertList/> ) || isSearch && <SearchList search={search}/>
+!isSearch && (pizza && <PizzaList/> || burger && <BurgersList/> || desert && <DesertList/> ) || (isSearch && search.length > 0 && <SearchList search={search}/>)
 }
 
     </div>

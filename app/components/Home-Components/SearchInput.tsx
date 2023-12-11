@@ -30,6 +30,7 @@ function SearchInput({search, setSearch, setIsSearch} : Props) {
       console.log(this.tagName)
 
     });
+
     
    
    return () => searchRef.current?.removeEventListener('focus', function(e) {
@@ -37,11 +38,34 @@ function SearchInput({search, setSearch, setIsSearch} : Props) {
   }); 
 
   }, [])
+
+
+  useEffect(()=>{
+
+    if(search == ""){
+      setIsSearch(false)
+    }
+
+    if(search.length === 1){
+      setIsSearch(true)
+
+    }
+  
+  },[search])
   
 
 
   return (
-    <input ref={searchRef} type='text'  placeholder='Chicken' onFocus={()=> setIsSearch(true)} value={search} onChange={(e)=>setSearch(e.target.value)}  className='p-2 bg-slate-200 rounded-md text-sm w-full focus-within:outline-none'/>
+    <input ref={searchRef} type='text'  placeholder='Chicken' value={search} onChange={(e)=>{
+      setSearch(e.target.value)
+
+      // if(search.length > 0){
+      //   setIsSearch(true)
+      // }else if(search === ""){
+      //   setIsSearch(false)
+      // }
+
+    }}  className='p-2 bg-slate-200 rounded-md text-sm w-full focus-within:outline-none'/>
   )
 }
 
