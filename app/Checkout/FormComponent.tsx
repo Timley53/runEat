@@ -1,15 +1,32 @@
 import { error } from 'console';
+import React, { FormEvent } from 'react';
 import { useForm } from 'react-hook-form';
 
-function FormComponent() {
+interface Props{
+    formSubmitAddress: (e: React.FormEvent | any, data:object) => void,
+    setMobileCheck: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function FormComponent({formSubmitAddress, setMobileCheck}:Props) {
       const {
         register,
         handleSubmit,
+        resetField,
         formState: { errors },
       } = useForm();
 
       return (
-        <form className='p-1 px-2 flex flex-col' onSubmit={handleSubmit((data) => console.log(data))}>
+        <form className='p-1 px-2 flex flex-col' onSubmit={handleSubmit((data, e) =>{
+            
+            formSubmitAddress(e,data)
+            resetField("firstName")
+            resetField("lastname")
+            resetField("address")
+            resetField("firstname")
+            resetField("city")
+            resetField("state")
+            resetField("phone")
+            })}>
 
         <div className="flex w-[90%] justify-between my-1  mt-4  text-sm flex-wrap">
             <label htmlFor="firstName"  className='w-[48%]'>
@@ -35,7 +52,7 @@ function FormComponent() {
                 Address
 
                 </span>
-            <input className='border-2 w-full m-1 rounded-md p-1' {...register('lastname',  { required: true }) } />
+            <input className='border-2 w-full m-1 rounded-md p-1' {...register('address',  { required: true }) } />
 
             </label>
 

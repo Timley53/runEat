@@ -9,8 +9,9 @@ import Pagination from '../components/Pagination'
 import AddressInput from './AddressInput'
 import Link from 'next/link'
 import { RxCross2 } from 'react-icons/rx'
-import { BsArrowRight } from 'react-icons/bs'
+import { BsArrowLeft, BsArrowReturnLeft, BsArrowRight } from 'react-icons/bs'
 import FormComponent from './FormComponent'
+import { BiArrowBack, BiArrowToLeft } from 'react-icons/bi'
 
 
 function Checkout() {
@@ -35,23 +36,25 @@ function Checkout() {
   const end = currentPage * dataPerPage
 
 
-    console.log(cartOrder)
+    // console.log(cartOrder)
     const dispatch = useDispatch()
 
     useEffect(() => {
       dispatch(getState())
     }, [])
 
-    const formSubmitAddress = (e: React.FormEvent)=> {
+    const formSubmitAddress = (e: React.FormEvent, data:object)=> {
       e.preventDefault()
       
 
-      dispatch(addOrder({
-        ...cartOrder,
-         address
-      }))
-dispatch(clearCart())
-dispatch(clearOrder())
+      console.log(data)
+
+//       dispatch(addOrder({
+//         ...cartOrder,
+         
+//       }))
+// dispatch(clearCart())
+// dispatch(clearOrder())
       // clearCart()
       
 
@@ -72,10 +75,13 @@ dispatch(clearOrder())
     Order cart
 
 <article className=' sm:fkex md:hidden flex p-1'>
-<button className='mr-6 p-2 text-xl'><RxCross2/>
-</button>
-<button className='p-2 text-xl' onClick={(e)=> setMobileCheck(true)}><BsArrowRight/></button>
+<Link href={"../"} onClick={()=> dispatch(clearOrder())} className='mr-6 p-2 text-xl'><RxCross2/>
+</Link>
 
+
+{
+cartOrder && cartOrder?.orders?.length > 0 && <button className='p-2 text-xl' onClick={(e)=> setMobileCheck(true)}><BsArrowRight/></button>
+}
 </article>
     </h2>
 
@@ -100,13 +106,13 @@ cartOrder && cartOrder?.orders.length < 1 && <div className="w-full">
   <article className='flex w-full justify-between my-1'>
     <span>Subtotal:</span>
     <span>${cartOrder?.orders.reduce((acc, curr)=>{
-          return acc + curr.price
+          return acc +  (curr.price * curr.quantity)
         } ,0)}</span>
   </article>
 
   <article className='flex w-full justify-between my-1'>
     <span>Delivery:</span>
-    <span>${shippingFee.toFixed(1) }</span>
+    <span>${ cartOrder ? (cartOrder?.orders?.length * 0.8).toFixed(1): 0 }</span>
   </article>
   </div>
 
@@ -114,9 +120,9 @@ cartOrder && cartOrder?.orders.length < 1 && <div className="w-full">
   <article className="flex w-full justify-between p-2 text-sm">
     <span>Total</span>
     <span>${
-       cartOrder && cartOrder?.orders.reduce((acc, curr)=>{
-          return acc + curr.price
-        } ,0) + shippingFee
+       (cartOrder && (cartOrder?.orders.reduce((acc, curr)=>{
+          return acc + (curr.price * curr.quantity)
+        } ,0) || 0) + shippingFee)
 }</span>
   </article>
   </div>
@@ -127,22 +133,26 @@ cartOrder && cartOrder?.orders.length < 1 && <div className="w-full">
 
 {/* buyers info */}
 
-    <div onSubmit={formSubmitAddress} className={`md:w-[44%] md:max-w-[350px]  sm:w-[100%] md:h-[95%] ${mobileCheck ? "md:flex sm:flex" : "md:flex sm:hidden"} flex-col p-1  mx-4 bg-[#FFFFFF] rounded-md`}>
+    <div  className={`md:w-[44%] md:max-w-[350px]  sm:w-[100%] md:h-[95%] pb-6 ${mobileCheck ? "md:flex sm:flex" : "md:flex sm:hidden"} flex-col p-1  mx-4 bg-[#FFFFFF] rounded-md`} >
 
-    <h2 className='p-1 py-2 w-[95%] border-b-2 mx-auto text-sm'>Delivery Info</h2>
+    <h2 className='p-1 py-2 w-[95%] border-b-2 mx-auto text-sm flex justify-between'>Delivery Info 
+    <button className='text-xl hover:text-red-200 transition-all' onClick={()=> setMobileCheck(false)}>
+      <RxCross2/>
+    </button>
+    </h2>
 
 
  
 
-    <FormComponent/>    
+    <FormComponent setMobileCheck={setMobileCheck} formSubmitAddress={formSubmitAddress}/>    
 
 
-      <article className='flex w-full justify-between p-1 my-1 items-center'>
+      {/* <article className='flex w-full justify-between p-1 my-1 items-center'>
         <Link href={"/"} onClick={()=> dispatch(clearOrder())} className='mt-3 p-1 py-2 px-4 rounded-md bg-rose-400 hover:bg-rose-200 text-center md:text-xs  sm:text-lg transition-all' >Cancel</Link>
 
         <button className='mt-3 p-2 px-4 rounded-md bg-green-500 hover:bg-emerald-200 text-center md:text-xs sm:text-lg  transition-all' 
         >Pay</button>
-      </article>
+      </article> */}
       
     </div>
 
