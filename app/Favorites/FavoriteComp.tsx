@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { GrFavorite } from 'react-icons/gr'
 import { MdFavorite } from 'react-icons/md'
 import { ImCross } from 'react-icons/im'
+import { showCartNotification } from '../GlobalRedux/slice/uiSlice'
 
 
 
@@ -30,6 +31,7 @@ function FavoriteComp({ id, img, title,price
       price,
       title
     }))
+    dispatch(showCartNotification())
   }
 
  

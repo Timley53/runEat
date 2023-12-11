@@ -16,6 +16,7 @@ import { createDate } from '../components/Home-Components/Cart'
 import { AiOutlineClear } from 'react-icons/ai'
 import Link from 'next/link'
 import { Unsubscribe } from '@reduxjs/toolkit'
+import CartNotification from '../components/Home-Components/CartNotification'
 
 
 
@@ -24,6 +25,7 @@ function Carts() {
     const cart = useSelector((state: Rootstate) => state.user.cart)
     const authorize = useSelector((state: Rootstate) => state.user.authorized)
   const userGlobal = useSelector((state: Rootstate) => state.user )
+
 
     const dispatch = useDispatch()
 
@@ -77,81 +79,29 @@ function Carts() {
         orders: [...cart],
         address: ''
       }
-      // dispatch(addOrder(newOrder));
       dispatch(setCheckOrder(newOrder))
         window.location.href = '/Checkout'
 
 
-    //   setCheckoutDetail(newOrder)
   
-    //   setIsOpen(true)
     }
 
     
   
 
-  // const checkOutOrder = () => {
-
-  //   // =============
-
-  //   const total = cart?.reduce((acc, curr) =>{
-  //     return acc + (curr.price * curr.quantity)
-  //   }, 0) 
+  
+ 
 
 
-  //   const newOrder:OrderType = {
-  //     id: generateUniqueId({
-  //       length: 9,
-  //       useLetters: true,
-  //       useNumbers: true,
-  //     }),
-  //     OverallPrice: total ,
-  //     time: createDate(),
-  //     pending: true,
-  //     completed: false,
-  //     canceled: false,
-  //     orderedBy: '',
-  //     orders: [...cart],
-  //     address: ''
-  //   }
 
-    
-  //       // Router.push('/Checkout')
-  //       // window.location('Checkout')
-
-      
-  // }
-
-
-/*
-
-    if(!authorize){
-      let x = document.cookie
-      
-      let splitCookieUnparsed = x.split(';')[1]
-      dispatch(setAuthorize(splitCookieUnparsed))
-      // console.log(split)
-      // const cookie = JSON.parse( `{"authorize": true}`)
-      // console.log(cookie)
-
-    }
-*/
-
-
-    useEffect(() => {
-      let unsubscribe:Unsubscribe | any
-      let x = document.cookie
-
-      let splitCookieUnparsed = x.split(';')[1]
-     
-      
-
-    }, [])
+ 
     
   
 
         return (
             <div className="w-[100%] h-[100%]   flex flex-col p-2 items-center sm:mb-10">
+
+
             <span className="mx-auto text-xl">Carts</span>
 
 <div className="flex w-full p-1 items-center justify-between ">

@@ -9,6 +9,8 @@ import { getState, setAuthorize, setStateCookies, singInG } from "../GlobalRedux
 import GoogleButton from "react-google-button"
 import { Unsubscribe, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../resource/firebase"
+import CartNotification from "../components/Home-Components/CartNotification"
+import { hideCartNotification } from "../GlobalRedux/slice/uiSlice"
 
 
 
@@ -17,6 +19,8 @@ function Favorites(){
   const favorite = useSelector((state : Rootstate) => state.user.favorite)
   const authorized = useSelector((state: Rootstate)=>state.user.authorized )
   const userGlobal = useSelector((state: Rootstate) => state.user )
+  const cartNotification = useSelector((state: Rootstate) => state.ui.cartNotification)
+
 
   // console.log(favorite)
   const dispatch = useDispatch()
@@ -37,17 +41,13 @@ function Favorites(){
 
 
   
-  useEffect(() => {
-    let unsubscribe:Unsubscribe | any
-    let x = document.cookie
+  useEffect(()=>{
 
-    let splitCookieUnparsed = x.split(';')[1]
-   
-     
+    setTimeout(()=> {
+      dispatch(hideCartNotification())
+    }, 3000)
 
-
-  }, [])
-  
+},[cartNotification])
 
   
 
@@ -55,7 +55,9 @@ function Favorites(){
     
 
     return(
-        <div className="w-[100%] h-[100%]   flex flex-col p-2 items-center sm:mb-10">
+        <div className="w-[100%] h-[100%]   flex flex-col p-2 items-center sm:mb-10 relative">
+    {cartNotification && <CartNotification/>}
+
         <span className="mx-auto text-xl">Favorites</span>
 
        

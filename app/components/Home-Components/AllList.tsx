@@ -39,13 +39,13 @@ function DesertList() {
   })
 
 
-  const dataPerPage = 8;
+  const dataPerPage = 10;
   const pages = Math.ceil(data ? data.length/ dataPerPage : 0 )
 
   const start = (currentPage - 1) * dataPerPage
   const end = currentPage * dataPerPage
 
-  if(isLoading) return (   <div className='w-full flex flex-wrap sm:justify-start md:justify-start sm:justify-center  md:items-start  h-[full] my-2 '>
+  if(isLoading) return (   <div className='w-full flex flex-wrap sm:justify-start md:justify-start   md:items-start  h-[full] my-2 '>
   {loadingArr.map((pizz) => {
     return (<LoadingComp key={pizz}/>)
 })}

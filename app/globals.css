@@ -32,6 +32,16 @@ input:focus > html{
   animation-fill-mode: both;
 }
 
+
+.cartNot{
+  position: absolute;
+  top: 20px;
+  display: flex;
+  left: 20px;
+  z-index: 100;
+}
+
+
 @keyframes loading {
   25%{
     background: rgb(136,134,132);

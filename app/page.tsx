@@ -21,26 +21,21 @@ export default function Home() {
   console.log(userGlobal)
 
 
-  useEffect(()=>{
-
-      setTimeout(()=> {
-        dispatch(hideCartNotification())
-      }, 3000)
-      // console.log('tt')
-
-  },[cartNotification])
-
+  
  
 
 
    useEffect(() => {
     dispatch(getState())
   }, [])
+
   
+  
+
 
   return (
     <main className="flex h-full relative ">
-            {cartNotification && <CartNotification/>}
+    {cartNotification && <CartNotification/>}
 
       <CheckoutModal isOpen={isOpen} setIsOpen={setIsOpen} checkoutDetails={checkoutDetails} setCheckoutDetail={setCheckoutDetail} />
 

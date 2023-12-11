@@ -48,7 +48,7 @@ function MainHome({showCart, setShowCart}: Cartprops) {
     
 
   return (
-    <div className={`md:w-[70%] ${showCart ? 'sm:hidden md:flex' : 'md:flex sm:flex'} sm:w-[100%]  flex-col h-full md:p-2 sm:p-1 items-center `}>
+    <div className={`md:w-[75%] ${showCart ? 'sm:hidden md:flex' : 'md:flex sm:flex'} sm:w-[100%]  flex-col h-full md:p-2 sm:p-1 items-center `}>
 
 
         <Intro/>

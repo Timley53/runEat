@@ -89,7 +89,7 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
   }
 
   return (
-    <div className={`bg-slate-100 md:h-screen md:w-[30%] sm:w-[100%] sm:h-[100%]  md:sticky md:top-0 flex-col items-center  md:right-0 ${showCart ? 'sm:flex md:flex' : 'sm:hidden md:flex'} py-2 `}>
+    <div className={`bg-slate-100 md:h-screen md:w-[30%] md:max-w-[320px] md:min-w-[280px]  sm:w-[100%] sm:h-[100%]  md:sticky md:top-0 flex-col items-center  md:right-0 ${showCart ? 'sm:flex md:flex' : 'sm:hidden md:flex'} py-2 `}>
     
 
     <div className="flex w-[100%]   items-center">
