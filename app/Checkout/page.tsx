@@ -11,7 +11,26 @@ import Link from 'next/link'
 import { RxCross2 } from 'react-icons/rx'
 import { BsArrowLeft, BsArrowReturnLeft, BsArrowRight } from 'react-icons/bs'
 import FormComponent from './FormComponent'
-import { BiArrowBack, BiArrowToLeft } from 'react-icons/bi'
+import { FlutterWaveButton, closePaymentModal } from 'flutterwave-react-v3';
+import {  } from 'flutterwave-react-v3/tsconfig.json';
+import { redirect } from 'next/navigation'
+import { FlutterWaveResponse } from 'flutterwave-react-v3/dist/types'
+import PaymentInfo from './PaymentInfo'
+import OrderComplete from './OrderComplete'
+
+
+
+
+
+export interface FormDataType {
+  firstName: string
+  lastname: string
+  address: string
+  city: string
+  state: string
+  phone: string
+  email: string
+}
 
 
 function Checkout() {
@@ -23,6 +42,8 @@ function Checkout() {
   const [lastName, setLastName] = useState<string>('')
   const [address, setAddress] = useState<string>('')
   const [city, setCity] = useState<string>('')
+  const [orderCompleteState, setOrderCompleteState] = useState<boolean>(false)
+
   
   // =============>>>
   
@@ -43,31 +64,23 @@ function Checkout() {
       dispatch(getState())
     }, [])
 
-    const formSubmitAddress = (e: React.FormEvent, data:object)=> {
-      e.preventDefault()
-      
 
-      console.log(data)
+    
 
-//       dispatch(addOrder({
-//         ...cartOrder,
-         
-//       }))
-// dispatch(clearCart())
-// dispatch(clearOrder())
-      // clearCart()
-      
 
-    }
+
+
+
     const shippingFee = cartOrder ? cartOrder?.orders?.length * 0.8: 0;
     const total = cartOrder ? cartOrder?.orders.reduce((acc, curr)=>{
       return acc + curr.price
     } ,0): 0;
 
   return (
-    <div className="w-full md:h-screen sm:h-screen flex  items-center bg-[#D8D9DD] p-2 justify-center">
+    <div className="w-full md:h-screen sm:h-screen flex  relative  items-center bg-[#D8D9DD] p-2 justify-center">
 
-
+{orderCompleteState && <OrderComplete/>
+}
 
 <div className={`md:w-[44%] md:max-w-[350px]  sm:w-[100%] md:h-[95%] ${mobileCheck ? "md:flex sm:hidden" : "md:flex sm:flex"} flex-col   mx-4 bg-[#FFFFFF] rounded-md`}>
 
@@ -133,28 +146,17 @@ cartOrder && cartOrder?.orders.length < 1 && <div className="w-full">
 
 {/* buyers info */}
 
-    <div  className={`md:w-[44%] md:max-w-[350px]  sm:w-[100%] md:h-[95%] pb-6 ${mobileCheck ? "md:flex sm:flex" : "md:flex sm:hidden"} flex-col p-1  mx-4 bg-[#FFFFFF] rounded-md`} >
 
-    <h2 className='p-1 py-2 w-[95%] border-b-2 mx-auto text-sm flex justify-between'>Delivery Info 
-    <button className='text-xl hover:text-red-200 transition-all' onClick={()=> setMobileCheck(false)}>
-      <RxCross2/>
-    </button>
-    </h2>
+    
 
 
  
 
-    <FormComponent setMobileCheck={setMobileCheck} formSubmitAddress={formSubmitAddress}/>    
+    <FormComponent amount={cartOrder ? cartOrder?.orders.reduce((acc, curr)=>{
+            return acc + curr.price
+          } ,0): 0} setMobileCheck={setMobileCheck} mobileCheck={mobileCheck} cartOrder={cartOrder} orderCompleteState={orderCompleteState} setOrderCompleteState={setOrderCompleteState}/>   
 
-
-      {/* <article className='flex w-full justify-between p-1 my-1 items-center'>
-        <Link href={"/"} onClick={()=> dispatch(clearOrder())} className='mt-3 p-1 py-2 px-4 rounded-md bg-rose-400 hover:bg-rose-200 text-center md:text-xs  sm:text-lg transition-all' >Cancel</Link>
-
-        <button className='mt-3 p-2 px-4 rounded-md bg-green-500 hover:bg-emerald-200 text-center md:text-xs sm:text-lg  transition-all' 
-        >Pay</button>
-      </article> */}
       
-    </div>
 
 
 
