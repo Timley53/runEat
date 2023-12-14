@@ -78,7 +78,7 @@ function FormComponent({ amount, setMobileCheck, mobileCheck, cartOrder, orderCo
         <div className='p-1 px-2 flex flex-col h-[58%] bg-[#FFFFFF] rounded-md'>
 
 <h2 className='p-1 py-2 w-[95%] border-b-2 mx-auto text-sm flex justify-between'>Delivery Info 
-    <button className='text-xl hover:text-red-200 transition-all  md:flex sm:hidden' onClick={()=> setMobileCheck(false)}>
+    <button className='text-xl hover:text-red-200 transition-all  md:hidden sm:flex' onClick={()=> setMobileCheck(false)}>
       <RxCross2/>
     </button>
     </h2>
