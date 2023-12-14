@@ -57,7 +57,7 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="panel w-full transform overflow-y-auto rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all md:w-[60%] sm:w-[85%] sm:h-[90%]  md:max-w-md md:h-[400px]   flex flex-col ">
+                <Dialog.Panel className="panel w-full transform overflow-y-auto rounded-md bg-white p-2 text-left align-middle shadow-xl transition-all md:w-[60%] sm:w-[85%] sm:h-[90%]  md:max-w-md md:h-[400px]   flex flex-col ">
 
                 <button className='p-2 text-red-600 self-end  text-base' onClick={() => setModal(false)}>
             <ImCross/>

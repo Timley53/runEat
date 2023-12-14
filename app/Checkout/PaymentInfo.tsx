@@ -1,9 +1,10 @@
 import React from 'react'
 import { FieldValue, FieldValues, UseFormRegister, useForm } from 'react-hook-form';
 import { PayButton } from './FormComponent';
+import { OrderType } from '../interface';
 
 
-export default function PaymentInfo({amount , register}: {amount: number, register: UseFormRegister<FieldValues>} ) {
+export default function PaymentInfo({cartOrder , register}: {cartOrder: OrderType | null, register: UseFormRegister<FieldValues>} ) {
 // const {register,handleSubmit,resetField,formState: { errors }, } = useForm();
 
 
@@ -43,7 +44,7 @@ export default function PaymentInfo({amount , register}: {amount: number, regist
             </label>
         </div>
 
-       <PayButton amount={amount}/>
+       <PayButton amount={cartOrder ? cartOrder?.orders.reduce((acc, curr)=> acc + (curr.price * curr.quantity),0): 0}/>
         
     </div>
   )

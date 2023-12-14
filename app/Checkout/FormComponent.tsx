@@ -8,7 +8,7 @@ import { RxCross2 } from 'react-icons/rx';
 import PaymentInfo from './PaymentInfo';
 import { OrderType } from '../interface';
 import { useDispatch } from 'react-redux';
-import { addOrder, clearOrder } from '../GlobalRedux/slice/userSlice';
+import { addOrder, clearCart, clearOrder } from '../GlobalRedux/slice/userSlice';
 import generateUniqueId from 'generate-unique-id';
 
 interface Props{
@@ -51,7 +51,7 @@ function FormComponent({ amount, setMobileCheck, mobileCheck, cartOrder, orderCo
           }),
           orderedBy: data.firtname,
           orders: cartOrder?.orders ,
-          OverallPrice: amount,
+          OverallPrice: cartOrder?.orders.reduce((acc, curr)=> acc + (curr.price * curr.quantity),0),
           time:  Date.now,
           pending: true,
           completed: false,
@@ -61,6 +61,7 @@ function FormComponent({ amount, setMobileCheck, mobileCheck, cartOrder, orderCo
 
          setOrderCompleteState(true)
          dispatch(clearOrder())
+         dispatch(clearCart())
       // formSubmitAddress(e,data)
       resetField("firstName")
       resetField("lastname")
@@ -77,10 +78,11 @@ function FormComponent({ amount, setMobileCheck, mobileCheck, cartOrder, orderCo
         <div className='p-1 px-2 flex flex-col h-[58%] bg-[#FFFFFF] rounded-md'>
 
 <h2 className='p-1 py-2 w-[95%] border-b-2 mx-auto text-sm flex justify-between'>Delivery Info 
-    <button className='text-xl hover:text-red-200 transition-all' onClick={()=> setMobileCheck(false)}>
+    <button className='text-xl hover:text-red-200 transition-all  md:flex sm:hidden' onClick={()=> setMobileCheck(false)}>
       <RxCross2/>
     </button>
     </h2>
+
 
         <div className="flex w-[90%] justify-between my-1  mt-2 mx-auto text-xs flex-wrap">
 
@@ -161,7 +163,7 @@ function FormComponent({ amount, setMobileCheck, mobileCheck, cartOrder, orderCo
         </div>
 
         </div>
-        <PaymentInfo amount={amount} register={register}/> 
+        <PaymentInfo cartOrder={cartOrder} register={register}/> 
 
         </form>
       );
