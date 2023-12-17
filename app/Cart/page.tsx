@@ -12,11 +12,11 @@ import CartPageComp from './CartPageComp'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../resource/firebase'
 import generateUniqueId from 'generate-unique-id'
-import { createDate } from '../components/Home-Components/Cart'
 import { AiOutlineClear } from 'react-icons/ai'
 import Link from 'next/link'
 import { Unsubscribe } from '@reduxjs/toolkit'
 import CartNotification from '../components/Home-Components/CartNotification'
+import { constructDate, createNewOrder } from '../utils'
 
 
 
@@ -47,38 +47,21 @@ function Carts() {
     return acc + (curr.price * curr.quantity)
   }, 0) 
   
-    const formatNumber = (num: number) => {
-      return new Intl.NumberFormat('en-US').format(num)
-    }
+ 
   
   
     const checkOutOrder = () => {
   
-      const formatNumber = (num: number) => {
-        return new Intl.NumberFormat('en-US').format(num)
-      }
+    
     
     if(cart.length < 1) return
 
   
      
-      const newOrder:OrderType = {
-        id: generateUniqueId({
-          length: 9,
-          useLetters: true,
-          useNumbers: true,
-        }),
-        OverallPrice:  cart?.reduce((acc, curr) =>{
-          return acc + (curr.price * curr.quantity)
-        }, 0)  ,
-        time: createDate(),
-        pending: true,
-        completed: false,
-        canceled: false,
-        orderedBy: '',
-        orders: [...cart],
-        address: ''
-      }
+      const newOrder:OrderType = createNewOrder(cart)
+
+    
+
       dispatch(setCheckOrder(newOrder))
         window.location.href = '/Checkout'
 

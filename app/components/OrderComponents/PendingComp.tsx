@@ -36,9 +36,11 @@ function PendingComp({id, OverallPrice,time, pending, canceled, completed, order
     {orderedBy}
         </span>
 
-        <span className='text-xs text-center'> 
-{time}
-        </span>
+        <div className='text-xs text-center flex flex-col'>
+          <span className='my-1'>{time.date}</span> 
+          <span className=''>{time.time}</span> 
+          {/* {time.date} */}
+        </div>
 
         <span className='text-xs text-center'>$
 {OverallPrice}

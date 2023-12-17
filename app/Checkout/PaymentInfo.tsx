@@ -14,12 +14,12 @@ export default function PaymentInfo({cartOrder , register}: {cartOrder: OrderTyp
     
     </h2>
        
-       <div className="email flex w-[90%] mb-1 mt-2 mx-auto  text-xs">
-            <label htmlFor="email" className='w-full'>
+       <div className="cardNo flex w-[90%] mb-1 mt-2 mx-auto  text-xs">
+            <label htmlFor="cardNo" className='w-full'>
                 <span className='mx-1'>
                 Card No
                 </span>
-            <input type='email' className='border-2 w-full mt-1 rounded-md p-1' {...register('email',  { required: true }) } />
+            <input type='tel' pattern="[0-9]*" className='border-2 w-full mt-1 rounded-md p-1' {...register('CardNo',  { required: true }) } />
             </label>
 
         </div>
@@ -28,18 +28,18 @@ export default function PaymentInfo({cartOrder , register}: {cartOrder: OrderTyp
 
         <div className="flex w-[90%] justify-between my-1  mt-2 mx-auto text-xs flex-wrap">
 
-            <label htmlFor="firstName"  className='w-[48%]'>
+            <label htmlFor="expDate"  className='w-[48%]'>
                 <span className='mx-1'>Exp. Date*</span>
-          <input className='border-2 w-full mt-1 rounded-md p-1' pattern="[0-9]*" {...register('firstName',  { required: true })} />
+          <input type='tel' maxLength={5} className='border-2 w-full mt-1 rounded-md p-1'  {...register('exp',  { required: true })} />
 
             </label>
 
-            <label htmlFor="lastname"  className='w-[48%]'>
+            <label htmlFor="cvv"  className='w-[48%]'>
         <span className='mx-1'>
                 Cvv*
 
         </span>
-          <input className='border-2 w-full mt-1 rounded-md p-1' pattern="[0-9]*" {...register('lastname',  { required: true }) } />
+          <input type='tel' maxLength={3} className='border-2 w-full mt-1 rounded-md p-1' pattern="[0-9]*" {...register('cv',  { required: true }) } />
 
             </label>
         </div>

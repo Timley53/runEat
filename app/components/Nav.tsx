@@ -35,7 +35,7 @@ const Nav = ({expand, setExpand}:Props) => {
   return (
     <nav 
     
-    className={`${expand ? 'md:w-[150px] transition-all': ' md:w-[80px] transition-all'} md:sticky sm:w-[100%] sm:h-[50px] sm:fixed sm:bottom-0 sm:left-0 md:top-0 md:left-0  md:h-screen  sm:z-50 md:flex md:flex-col sm:flex sm:flex-row md:items-center sm:items-center  md:py-2 text-2xl bg-slate-200 ${pathname === "/Checkout" ? "hidden": ""}` }>
+    className={`${expand ? 'md:w-[150px] transition-all': ' md:w-[80px] transition-all'} md:sticky sm:w-[100%] sm:h-[50px] sm:fixed sm:bottom-0 sm:left-0 md:top-0 md:left-0  md:h-screen md:z-10  sm:z-50 md:flex md:flex-col sm:flex sm:flex-row md:items-center sm:items-center  md:py-2 text-2xl bg-slate-200 ${pathname === "/Checkout" ? "hidden": ""}` }>
    
 
     <article className={`text-2xl mt-9 md:flex  w-full ${expand ? 'md:justify-start sm:justify-center': "justify-center"}  md:pl-2 cursor-pointer  sm:hidden  transition-all`} 

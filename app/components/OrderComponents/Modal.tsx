@@ -16,6 +16,7 @@ import { showConfirm } from '@/app/GlobalRedux/slice/uiSlice'
 import { createDate } from '../Home-Components/Cart'
 import generateUniqueId from 'generate-unique-id'
 import Link from 'next/link'
+import ModalOrder from './ModalOrder'
 
 
 
@@ -24,7 +25,10 @@ import Link from 'next/link'
 export default function OrderModal() {
 const dispatch = useDispatch()
 const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext)
+const [orderInfo, setOrderInfo] = useState<boolean>(true)
+
   console.log(orderDetails?.address)
+  console.log(orderDetails?.orderedBy)
 
 // const {id, OverallPrice,time, pending, canceled, completed, orderedBy, orders} = orderDetails
 
@@ -43,7 +47,7 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-40   backdrop-blur-md" />
+            <div className="fixed inset-0 bg-black bg-opacity-40   backdrop-blur-md " />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -57,76 +61,29 @@ const {modal, setModal, setOrderDetails, orderDetails} = useContext(OrderContext
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="panel w-full transform overflow-y-auto rounded-md bg-white p-2 text-left align-middle shadow-xl transition-all md:w-[60%] sm:w-[85%] sm:h-[90%]  md:max-w-md md:h-[400px]   flex flex-col ">
+                <Dialog.Panel className="panel w-full transform overflow-y-auto rounded-md bg-white p-2 text-left shadow-xl transition-all md:w-[60%] sm:w-[85%] sm:h-[90%] md:max-w-[450px] md:h-[400px] flex  flex-col">
 
-                <button className='p-2 text-red-600 self-end  text-base' onClick={() => setModal(false)}>
-            <ImCross/>
-          </button>
+      
+
 
 
                   <Dialog.Title
                     as="div"
-                    className="flex w-full items-center"
+                    className="flex w-full justify-between border-b-2 p-1 items-center"
                   >
-                    <span className='text-lg font-medium leading-6 text-gray-900'>
-                    {orderDetails?.pending ? 'Pending Order': orderDetails?.completed ? 'Completed Order': 'Canceled Order'}
-                    </span>
+                    <h3 className='text-sm'>{orderDetails?.pending && <>Pending order</> || orderDetails?.completed && <>Completed order</>}</h3>
 
-                    <span className='mx-5'>
-                      Total: 
-                    ${orderDetails?.OverallPrice}
-                    </span>
+
+<button className='p-2 self-end hover:text-red-600 transition-all text-sm' onClick={() => setModal(false)}>
+<ImCross/>
+</button>
 
                       
                   </Dialog.Title>
-            <div className='w-full text-left p-2'>
-              <i className=''>Address:</i>{orderDetails?.address}
-            </div>
-                 
-                 {
-                 orderDetails?.orders.map((order: CartType)=> {
-                  return(
-                    <div key={order.id} className="flex flex-col my-2 rounded-md bg-slate-100 bg-opacity-0.5 p-2">
+
+                 <ModalOrder orderInfo={orderInfo} setOrderInfo={setOrderInfo} orderDetails={orderDetails}/> 
 
 
-                    
-                    <article className=" flex ">
-                      <span className='font-bold mx-1 text-sm'>Order Title:</span>
-                      <p className='mx-1 text-sm'>
-  
-                      {order.title} 
-                      
-                      </p>
-  
-                    </article>
-                    
-                    <article className='flex mt-2'>
-  <span className='font-bold mx-1 text-sm'>Size:</span>
-  <p className='text-sm'>{order.size}</p>
-  
-                    </article>
-                    <article className='flex mt-2'>
-  <span className='font-bold mx-1'>Quantity:</span>
-  <p className='text-sm'>{order.quantity}</p>
-  
-                    </article>
-  
-                    <article className='flex mt-2'>
-  <span className='font-bold mx-1'>Price:</span>
-  <p className='text-sm'>${order.price}</p>
-  
-                    </article>
-                    </div>
-                  )
-                 })
-                 }
-                 
-                  
-
-
-
-
-                  
 
                   <div className="mt-4  flex">
                     <button

@@ -14,6 +14,7 @@ import CheckoutModal from './CheckoutModal'
 import { auth } from '@/app/resource/firebase'
 import Router from 'next/router'
 import Link from 'next/link'
+import { constructDate, createNewOrder } from '@/app/utils'
 
 interface CartAndModal extends Cartprops {
   isOpen: boolean,
@@ -22,15 +23,7 @@ interface CartAndModal extends Cartprops {
     checkoutDetails: OrderType | null
 }
 
-export const createDate: () => string = () => {
-const day = new Date().getDate() + ''
-const month = new Date().getMonth() + ''
-const year = new Date().getFullYear() + ''
 
-  const date = `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`
-
-  return date
-}
 
 
 
@@ -59,24 +52,27 @@ function Cart({showCart, setShowCart, isOpen, setIsOpen, setCheckoutDetail, chec
 
     if(cart.length < 1) return
 
-    const newOrder:OrderType = {
-      id: generateUniqueId({
-        length: 9,
-        useLetters: true,
-        useNumbers: true,
-      }),
-      OverallPrice: cart?.reduce((acc, curr) =>{
-        return acc + (curr.price * curr.quantity)
-      }, 0) 
-   ,
-      time: createDate(),
-      pending: true,
-      completed: false,
-      canceled: false,
-      orderedBy: '',
-      orders: [...cart],
-      address: ''
-    }
+    const newOrder:OrderType = createNewOrder(cart)
+    
+    
+  //   {
+  //     id: generateUniqueId({
+  //       length: 9,
+  //       useLetters: true,
+  //       useNumbers: true,
+  //     }),
+  //     OverallPrice: cart?.reduce((acc, curr) =>{
+  //       return acc + (curr.price * curr.quantity)
+  //     }, 0) 
+  //  ,
+  //     time: constructDate(),
+  //     pending: true,
+  //     completed: false,
+  //     canceled: false,
+  //     orderedBy: '',
+  //     orders: [...cart],
+  //     address: '',
+  //   }
 
     
         dispatch(setCheckOrder(newOrder))

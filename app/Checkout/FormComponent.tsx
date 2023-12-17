@@ -10,6 +10,8 @@ import { OrderType } from '../interface';
 import { useDispatch } from 'react-redux';
 import { addOrder, clearCart, clearOrder } from '../GlobalRedux/slice/userSlice';
 import generateUniqueId from 'generate-unique-id';
+import {constructDate} from  "../utils"
+
 
 interface Props{
     // formSubmitAddress: (e: React.FormEvent | any, data:object) => void,
@@ -42,17 +44,17 @@ function FormComponent({ amount, setMobileCheck, mobileCheck, cartOrder, orderCo
     <form  className={`md:w-[44%] md:max-w-[350px]  sm:w-[100%] md:h-[95%] ${mobileCheck ? "md:flex sm:flex" : "md:flex sm:hidden"} flex-col p-1  mx-4  rounded-md`}  onSubmit={handleSubmit((data, e: React.BaseSyntheticEvent<object, any, any> | undefined | any) =>{
 
 
-
+      console.log(data)
          dispatch(addOrder({
           id: generateUniqueId({
             length: 8,
             useLetters:true,
             useNumbers: true,
           }),
-          orderedBy: data.firtname,
+          orderedBy: data.firstName,
           orders: cartOrder?.orders ,
           OverallPrice: cartOrder?.orders.reduce((acc, curr)=> acc + (curr.price * curr.quantity),0),
-          time:  Date.now,
+          time: constructDate(),
           pending: true,
           completed: false,
           canceled: false,
@@ -70,8 +72,6 @@ function FormComponent({ amount, setMobileCheck, mobileCheck, cartOrder, orderCo
       resetField("state")
       resetField("phone")
       resetField("email")
-
-
 
       })}>
 

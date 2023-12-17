@@ -106,7 +106,10 @@ export interface OrderType {
     orderedBy: string,
     orders: CartType[] ;
     OverallPrice: number;
-    time: string;
+    time: {
+        time: string,
+        date: string
+    };
     pending: boolean,
     completed: boolean,
     canceled: boolean,
