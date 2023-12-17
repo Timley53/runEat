@@ -13,10 +13,10 @@ import { Context } from 'vm'
 import AYS from '../AYS'
 import { cancelOrder, completeOrder, setCheckOrder } from '@/app/GlobalRedux/slice/userSlice'
 import { showConfirm } from '@/app/GlobalRedux/slice/uiSlice'
-import { createDate } from '../Home-Components/Cart'
 import generateUniqueId from 'generate-unique-id'
 import Link from 'next/link'
 import ModalOrder from './ModalOrder'
+import { constructDate } from '@/app/utils'
 
 
 
@@ -130,7 +130,7 @@ const [orderInfo, setOrderInfo] = useState<boolean>(true)
                             useLetters: true,
                             useNumbers: true,
                           }),
-                          time: createDate(),
+                          time: constructDate().time,
                         }))
                         setModal(false)
                       }}
