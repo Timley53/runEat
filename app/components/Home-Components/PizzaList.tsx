@@ -27,6 +27,8 @@ function PizzaList() {
 
       if(!res.ok) throw new Error(res.statusText)
 
+      
+
       // console.log(data.data.recipes)
 
       const pricedData = data.data.recipes.map((data: pizzaRecipeType) => {

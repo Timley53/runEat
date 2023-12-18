@@ -5,26 +5,12 @@ import { OrderType } from '@/app/interface'
 import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-// const newOrder:OrderType = {
-//   id: generateUniqueId({
-//     length: 9,
-//     useLetters: true,
-//     useNumbers: true,
-//   }),
-//   OverallPrice: total ,
-//   time: new Date(),
-//   pending: true,
-//   completed: false,
-//   canceled: false,
-//   orderedBy: '',
-//   orders: [...cart],
-// }
+
 
 function PendingComp({id, OverallPrice,time, pending, canceled, completed, orderedBy, orders, address} : OrderType) {
   const dispatch = useDispatch()
   const {modal, setModal, orderDetails, setOrderDetails} = useContext(OrderContext)
 
-  console.log(time);
   
   return (
     <article className='text-sm flex justify-between p-3 py-2 my-2 bg-white rounded-lg items-center'>
@@ -43,7 +29,7 @@ function PendingComp({id, OverallPrice,time, pending, canceled, completed, order
         </div>
 
         <span className='text-xs text-center'>$
-{OverallPrice}
+      {OverallPrice}
         </span>
 
         <span className='text-xs text-center'>

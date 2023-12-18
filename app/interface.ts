@@ -89,6 +89,7 @@ export interface pricedDataType {
     price: number,
     quantity: number,
     favorite: boolean
+    ingredients: string[]
 }
 
 export interface SingleOrderType{

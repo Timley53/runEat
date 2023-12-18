@@ -58,7 +58,7 @@ function CheckArticle({id, quantity, img,price, title, size}: CartType) {
     <select onChange={(e)=> dispatch(changeOrderSize({
         id,
         size: e.target.value
-    }))} className='text-xs bg-transparent'>
+    }))} className='text-xs bg-transparent border-2'>
         
         <option className='text-sm'>{size}</option>
         <option className='text-sm' value={'SM'}>SM</option>
