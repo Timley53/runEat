@@ -44,44 +44,6 @@ interface productType {
 }
 
 
-
- function getRecipe(id: string){
-  const url = `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-
-
-
-  const { data, isLoading, isError, error}  = useQuery({
-    queryKey: ['getProduct'],
-    staleTime: Infinity,
-  
-    queryFn: async () => {
-      const res = await fetch(url)
-      let data = await res.json()
-
-      if(!res.ok) throw new Error(res.statusText)
-
-      
-
-      // console.log(data.data.recipes)
-
-      const pricedData = data.data.recipes.map((data: pizzaRecipeType) => {
-        return {
-          ...data, price: Math.floor(Math.random() * 12) + 1,
-          quantity: 1,
-        }
-      })
-      // console.log(pricedData)
-
-      return pricedData as productType[]
-    }
-  })
-
- }
-
-
-
-
-  
   
   
  function Page({params }:ProductPageProps  ){
